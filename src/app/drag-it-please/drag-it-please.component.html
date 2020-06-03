@@ -2,8 +2,8 @@
 
 <div class="drag-container">
 
-  <div *ngFor="let dropTarget of dropTargets" class="drop-zone">
-    <div *ngFor="let item of getDroppedItems(dropTarget)"
+  <div *ngFor="let dropzone of dropZones" class="drop-zone">
+    <div *ngFor="let item of getDroppedItems(dropzone)"
          class="dropped-item"
          [style.background-color]="item.color">
       {{ item.text }}

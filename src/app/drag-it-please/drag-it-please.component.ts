@@ -87,7 +87,10 @@ export class DragItPleaseComponent implements OnInit {
     }
     this.droppedItemsHash.get(dropZone).push(this.actuallyDragged);
     for (const key of this.droppedItemsHash.keys()) {
-      console.log(this.droppedItemsHash.get(key).length + ' items in drop zone ' + key + '...');
+      console.log(this.droppedItemsHash.get(key).length + ' items in drop zone ' + key + ':');
+      for (const item of this.droppedItemsHash.get(key)) {
+        console.log(item);
+      }
     }
 
     this.actuallyDragged = undefined;
@@ -95,6 +98,7 @@ export class DragItPleaseComponent implements OnInit {
 
   getDroppedItems(identifier: string) {
     console.log('get dropped items for identifier: ' + identifier);
-    return this.droppedItems;
+    // return this.droppedItems;
+    return this.droppedItemsHash.get(identifier);
   }
 }
