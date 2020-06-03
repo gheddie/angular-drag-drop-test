@@ -1,0 +1,27 @@
+<p>drag-it-please works!</p>
+
+<div class="drag-container">
+
+  <div *ngFor="let dropTarget of dropTargets" class="drop-zone">
+    <div *ngFor="let item of getDroppedItems(dropTarget)"
+         class="dropped-item"
+         [style.background-color]="item.color">
+      {{ item.text }}
+    </div>
+  </div>
+
+  <div *ngFor="let item of getDraggableItems()"
+       class="draggable-item"
+       [style.left]="item.left+'px'"
+       [style.top]="item.top+'px'"
+       [style.background-color]="item.color"
+       draggable="true"
+       (dragstart)="dragStart($event, item)"
+       (dragend)="dragEnd($event, item)">
+    {{ item.text }}
+  </div>
+</div>
+
+<div *ngFor="let dropzone of dropZones" id="{{dropzone}}" class="drop-zone"
+     (dragover)="dragOver($event)"
+     (drop)="drop($event, dropzone)">target {{dropzone}}</div>

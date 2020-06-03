@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "shunting-test"
+    }
+  },
+  "defaultProject": "shunting-test",
+  "cli": {
+    "analytics": false
+  }
 }

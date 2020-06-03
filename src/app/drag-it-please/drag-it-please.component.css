@@ -1,0 +1,25 @@
+.drag-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.drop-zone {
+  height: 60px;
+  background-color: #dadada;
+}
+
+.draggable-item {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 80px;
+}
+
+.dropped-item {
+  text-align: center;
+  line-height: 20px;
+}
