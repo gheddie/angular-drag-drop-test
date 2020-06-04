@@ -45,12 +45,29 @@ export class DragItPleaseComponent implements OnInit {
 
     const waggonsT3 = [];
 
-    this.tracks = [
-      new Track('T1', 0, 100, 0, 0, 0, waggonsT1, 400),
-      new Track('T2', 0, 200, 0, 0, 0, waggonsT2, 300),
-      new Track('T3', 0, 300, 0, 0, 0, waggonsT3, 200),
-      new Track('T4', 0, 400, 0, 0, 0, null, 550)
+    const waggonsT4 = [
+      new Waggon('456', 25),
+      new Waggon('567', 25),
+      new Waggon('678', 25),
+      new Waggon('789', 25),
+      new Waggon('890', 25),
     ];
+
+    this.tracks = [
+      new Track('T1', 100, 100, 0, waggonsT1, 400),
+      new Track('T2', 50, 200, 0, waggonsT2, 300),
+      new Track('T3', 25, 300, 0, waggonsT3, 200),
+      new Track('T4', 175, 400, 0, waggonsT4, 550)
+    ];
+
+    /*
+    this.tracks = [
+      new Track('T1', 0, 100, 0, 0, 0, null, 400),
+      new Track('T2', 0, 200, 0, 0, 0, null, 300),
+      new Track('T3', 0, 300, 0, 0, 0, null, 200),
+      new Track('T4', 0, 400, 0, 0, 0, waggonsT4, 550)
+    ];
+    */
   }
 
   public dragStart(event: DragEvent, waggon: Waggon){
@@ -78,7 +95,7 @@ export class DragItPleaseComponent implements OnInit {
     // remove waggon from source track...
     targetWaggon.track.removeWaggon(droppedWaggon);
     // add waggon to target track...
-    targetWaggon.track.waggons.push(droppedWaggon);
+    targetWaggon.track.waggons.splice((targetWaggon.track.waggons.indexOf(targetWaggon) + 1), 0, droppedWaggon);
 
     droppedWaggon.track = targetWaggon.track;
 
@@ -117,17 +134,17 @@ export class DragItPleaseComponent implements OnInit {
 
   calculateWaggonOffsetOnTrack(waggon: Waggon) {
     let result = 0;
-    // console.log('calculate waggon offset on track: ' + waggon.waggonNumber);
+    // console.log('calculate waggon offset for waggon ' + waggon.waggonNumber + ' on track: ' + waggon.track.trackNumber);
     const index = waggon.track.waggons.indexOf(waggon);
     for (let i = 0; i < index; i++) {
-      // console.log('regarding waggon: ' + waggon.track.waggons[i].waggonNumber);
+      // console.log('regarding previous waggon: ' + waggon.track.waggons[i].waggonNumber);
       result += waggon.track.waggons[i].renderingLength + DragItPleaseComponent.DROPZONE_WIDTH + 20;
     }
     return result;
   }
 
   calculateDropzoneOffsetOnTrack(waggon: Waggon) {
-    return this.calculateWaggonOffsetOnTrack(waggon) + waggon.renderingLength + DragItPleaseComponent.DROPZONE_WIDTH;
+    return this.calculateWaggonOffsetOnTrack(waggon) + waggon.renderingLength;
   }
 
   isLastWaggonOnTrack(waggon: Waggon) {
@@ -138,6 +155,7 @@ export class DragItPleaseComponent implements OnInit {
     if (this.isLastWaggonOnTrack(waggon) || this.isTrackEmpty(waggon.track)) {
       return this.getEmptyTrackLenght(waggon);
     }
+    // return DragItPleaseComponent.DROPZONE_WIDTH;
     return 15;
   }
 

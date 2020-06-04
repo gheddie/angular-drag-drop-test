@@ -2,7 +2,7 @@
 
   <!-- occupied tracks -->
   <div *ngFor="let track of getOccupiedTracks()" class="track-item" (click)="trackClicked(track)"
-       [style.left]="200+'px'"
+       [style.left]="track.xFrom+'px'"
        [style.top]="track.yFrom+'px'"
        [style.height]="getTrackHeight()+'px'"
        [style.width]="track.lenght+'px'">
@@ -30,7 +30,7 @@
 
   <!-- empty tracks (completely as drop zone) -->
   <div *ngFor="let track of getEmptyTracks()" class="track-item" (click)="trackClicked(track)"
-       [style.left]="200+'px'"
+       [style.left]="track.xFrom+'px'"
        [style.top]="track.yFrom+'px'"
        [style.height]="getTrackHeight()+'px'"
        [style.width]="track.lenght+'px'"
