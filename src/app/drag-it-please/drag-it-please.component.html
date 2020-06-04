@@ -1,5 +1,5 @@
 <div class="drag-container">
-  <div *ngFor="let track of tracks" class="track-item"
+  <div *ngFor="let track of tracks" class="track-item" (drop)="dropWaggonToTrack($event, track)"
        [style.left]="200+'px'"
        [style.top]="track.yFrom+'px'"
        [style.height]="50+'px'"
@@ -22,7 +22,7 @@
          [style.left]="(calculateDropzoneOffsetOnTrack(waggon))+'px'"
          [style.top]="(waggon.y)+'px'"
          (dragover)="dragOver($event)"
-         (drop)="drop($event, waggon)">
+         (drop)="dropWaggonToWaggon($event, waggon)">
     </div>
   </div>
 </div>

@@ -67,9 +67,9 @@ export class DragItPleaseComponent implements OnInit {
     }
   }
 
-  public drop(event: DragEvent, targetWaggon : Waggon) {
+  public dropWaggonToWaggon(event: DragEvent, targetWaggon : Waggon) {
 
-    console.log('dropped waggon ' + this.actuallyDragged.waggonNumber + ' [target=' + targetWaggon.waggonNumber + '].');
+    console.log('dropped waggon ' + this.actuallyDragged.waggonNumber + ' to waggon ' + targetWaggon.waggonNumber + ' [target=' + targetWaggon.waggonNumber + '].');
 
     /*
     const index = this.waggons.indexOf(this.actuallyDragged);
@@ -125,5 +125,9 @@ export class DragItPleaseComponent implements OnInit {
 
   private isTrackEmpty(track: Track) {
     return (track.waggons == null || track.waggons.length === 0);
+  }
+
+  public dropWaggonToTrack(event: DragEvent, targetTrack : Track) {
+
   }
 }
