@@ -25,12 +25,21 @@ export class Track {
     this.xTo = axTo;
     this.yTo = ayTo;
     this.index = aIndex;
-    this.waggons = aWaggons;
+    if (aWaggons != null) {
+      this.waggons = aWaggons;
+    } else {
+      this.waggons = [];
+    }
     this.lenght = aLenght;
     if (this.waggons != null) {
       for (const waggon of this.waggons) {
         waggon.track = this;
       }
     }
+  }
+
+  removeWaggon(waggonToRemove: Waggon) {
+    const index = waggonToRemove.track.waggons.indexOf(waggonToRemove);
+    waggonToRemove.track.waggons.splice(index, 1);
   }
 }

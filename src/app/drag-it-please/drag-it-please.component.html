@@ -1,13 +1,13 @@
 <div class="drag-container">
 
   <!-- occupied tracks -->
-  <div *ngFor="let track of getOccupiedTracks()" class="track-item"
+  <div *ngFor="let track of getOccupiedTracks()" class="track-item" (click)="trackClicked(track)"
        [style.left]="200+'px'"
        [style.top]="track.yFrom+'px'"
        [style.height]="getTrackHeight()+'px'"
        [style.width]="track.lenght+'px'">
     <!-- all the waggons -->
-    <div *ngFor="let waggon of track.waggons"
+    <div *ngFor="let waggon of track.waggons" (click)="waggonClicked(waggon)"
          class="waggon-item"
          [style.height]="30+'px'"
          [style.width]="waggon.renderingLength+'px'"
@@ -29,7 +29,7 @@
   </div>
 
   <!-- empty tracks (completely as drop zone) -->
-  <div *ngFor="let track of getEmptyTracks()" class="track-item"
+  <div *ngFor="let track of getEmptyTracks()" class="track-item" (click)="trackClicked(track)"
        [style.left]="200+'px'"
        [style.top]="track.yFrom+'px'"
        [style.height]="getTrackHeight()+'px'"

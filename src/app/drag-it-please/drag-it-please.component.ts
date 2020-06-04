@@ -35,12 +35,12 @@ export class DragItPleaseComponent implements OnInit {
     this.droppedItemsHash = new Map<string, Item[]>();
 
     const waggonsT1 = [
-      new Waggon('123', 10, 0, 'T1', 0, 25),
-      new Waggon('234', 110, 0, 'T1', 1, 50)
+      new Waggon('123', 25),
+      new Waggon('234', 50)
     ];
 
     const waggonsT2 = [
-      new Waggon('345', 210, 0, 'T2', 0, 50)
+      new Waggon('345', 50)
     ];
 
     const waggonsT3 = [];
@@ -54,7 +54,7 @@ export class DragItPleaseComponent implements OnInit {
   }
 
   public dragStart(event: DragEvent, waggon: Waggon){
-    // console.log('drag start: ' + waggon.waggonNumber);
+    console.log('start dragging waggon: ' + waggon.waggonNumber);
     this.actuallyDragged = waggon;
   }
 
@@ -70,13 +70,36 @@ export class DragItPleaseComponent implements OnInit {
   }
 
   public dropWaggonToWaggon(event: DragEvent, targetWaggon : Waggon) {
-    console.log('dropped waggon ' + this.actuallyDragged.waggonNumber + ' to waggon ' + targetWaggon.waggonNumber + '.');
+
+    console.log('dropped waggon ' + this.actuallyDragged.waggonNumber + ' to waggon ' + targetWaggon.waggonNumber + ' [target track=' + targetWaggon.track.trackNumber + '].');
+
+    const droppedWaggon = this.actuallyDragged;
+
+    // remove waggon from source track...
+    targetWaggon.track.removeWaggon(droppedWaggon);
+    // add waggon to target track...
+    targetWaggon.track.waggons.push(droppedWaggon);
+
+    droppedWaggon.track = targetWaggon.track;
+
     this.actuallyDragged = undefined;
+    this.debugTrackWaggons();
   }
 
   public dropWaggonToTrack(event: DragEvent, targetTrack : Track) {
-    console.log('dropped waggon ' + this.actuallyDragged.waggonNumber + ' to waggon ' + targetTrack.trackNumber + '.');
+    console.log('dropped waggon ' + this.actuallyDragged.waggonNumber + ' to track ' + targetTrack.trackNumber + '.');
+
+    const droppedWaggon = this.actuallyDragged;
+
+    // remove waggon from source track...
+    targetTrack.removeWaggon(this.actuallyDragged);
+    // add waggon to target track...
+    targetTrack.waggons.push(this.actuallyDragged);
+
+    droppedWaggon.track = targetTrack;
+
     this.actuallyDragged = undefined;
+    this.debugTrackWaggons();
   }
 
   getDroppedItems(identifier: string) {
@@ -84,8 +107,12 @@ export class DragItPleaseComponent implements OnInit {
     return this.droppedItemsHash.get(identifier);
   }
 
-  waggonClicked(waggonNumber: string) {
-    console.log('waggon clicked: ' + waggonNumber);
+  waggonClicked(aWaggon: Waggon) {
+    console.log('waggon clicked: ' + aWaggon.waggonNumber);
+  }
+
+  trackClicked(aTrack: Track) {
+    console.log('track clicked: ' + aTrack.trackNumber);
   }
 
   calculateWaggonOffsetOnTrack(waggon: Waggon) {
@@ -148,5 +175,18 @@ export class DragItPleaseComponent implements OnInit {
 
   getTrackHeight() {
     return DragItPleaseComponent.TRACK_HEIGHT;
+  }
+
+  private debugTrackWaggons() {
+    for (const t of this.tracks) {
+      if (this.isTrackEmpty(t)) {
+        console.log('--- Track [' + t.trackNumber + '] (EMPTY) ------------');
+      } else {
+        console.log('--- Track [' + t.trackNumber + '] (' + t.waggons.length + ' waggons) ------------');
+        for (const w of t.waggons) {
+          console.log('Waggon [' + w.waggonNumber + '] ------------');
+        }
+      }
+    }
   }
 }
