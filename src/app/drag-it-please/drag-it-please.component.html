@@ -2,6 +2,7 @@
 
 <div class="drag-container">
 
+  <!--
   <div *ngFor="let dropzone of dropZones" class="drop-zone">
     <div *ngFor="let item of getDroppedItems(dropzone)"
          class="dropped-item"
@@ -9,9 +10,25 @@
       {{ item.text }}
     </div>
   </div>
+  -->
 
+  <!--
+  <svg height="800" width="1200">
+    <line
+          [attr.x1]="10"
+          [attr.y1]="10"
+          [attr.x2]="100"
+          [attr.y2]="10"
+          style="stroke:rgb(0,0,0);stroke-width:2">
+    </line>
+  </svg>
+  -->
+
+  <!-- all the waggons -->
   <div *ngFor="let item of getDraggableItems()"
        class="draggable-item"
+       [style.height]="50+'px'"
+       [style.width]="75+'px'"
        [style.left]="item.left+'px'"
        [style.top]="item.top+'px'"
        [style.background-color]="item.color"
@@ -20,8 +37,15 @@
        (dragend)="dragEnd($event, item)">
     {{ item.text }}
   </div>
+
 </div>
 
-<div *ngFor="let dropzone of dropZones" id="{{dropzone}}" class="drop-zone"
+<!-- a drop zone for every waggon -->
+<div *ngFor="let item of getDraggableItems()" class="drop-zone"
+     [style.height]="30+'px'"
+     [style.width]="30+'px'"
+     [style.left]="item.left+'px'"
+     [style.top]="(item.top+200)+'px'"
      (dragover)="dragOver($event)"
-     (drop)="drop($event, dropzone)">target {{dropzone}}</div>
+     (drop)="drop($event)">
+</div>

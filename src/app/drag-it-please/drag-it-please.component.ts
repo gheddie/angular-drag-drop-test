@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Item} from '../shared/item';
-import {WaggonListHash} from '../shared/waggon-list-hash';
+import {Waggon} from '../shared/waggon';
 
 // https://entwickler.de/online/javascript/angular-d3-js-drag-drop-579852258.html
 
@@ -13,9 +13,6 @@ export class DragItPleaseComponent implements OnInit {
 
   public draggableItems: Item[] = [];
 
-  public droppedItems: Item[] = [];
-
-  // public droppedItemsHash: WaggonListHash = {};
   public droppedItemsHash: Map<string, Item[]>;
 
   public actuallyDragged: Item;
@@ -23,6 +20,13 @@ export class DragItPleaseComponent implements OnInit {
   public dropZones: string[] = ['DZ1', 'DZ2'];
 
   public dropTargets: string[] = ['DT1', 'DT2', 'DT3', 'DT4'];
+
+  waggons: Array<Waggon> = [
+    // T1
+    new Waggon('123', 10, 10, 'T1', 0, 25),
+    new Waggon('234', 50, 50, 'T1', 1, 50),
+    new Waggon('345', 90, 90, 'T1', 2, 50),
+  ];
 
   constructor() {
     // ...
@@ -32,24 +36,11 @@ export class DragItPleaseComponent implements OnInit {
 
     this.droppedItemsHash = new Map<string, Item[]>();
 
-    /*
-    this.droppedItemsHash.hallo = [];
-    this.droppedItemsHash.knallo = [];
-
-    this.droppedItemsHash.hallo.push({ text: 'Item 1', color: 'red', left: 0, top: 0 }, { text: 'Item 1', color: 'red', left: 0, top: 0 });
-    this.droppedItemsHash.knallo.push({ text: 'Item 1', color: 'red', left: 0, top: 0 });
-
-    console.log('hallo: ' + this.droppedItemsHash.hallo.length);
-    console.log('knallo: ' + this.droppedItemsHash.knallo.length);
-    */
-
-    // ---
-
     this.draggableItems = [
-      { text: 'Item 1', color: 'red', left: 0, top: 0 },
-      { text: 'Item 2', color: 'green', left: 0, top: 50 },
-      { text: 'Item 3', color: 'yellow', left: 0, top: 100 },
-      { text: 'Item 4', color: 'black', left: 0, top: 150 }
+      { text: 'Item 1', color: 'white', left: 0, top: 100 },
+      { text: 'Item 2', color: 'white', left: 100, top: 100 },
+      { text: 'Item 3', color: 'white', left: 200, top: 100 },
+      { text: 'Item 4', color: 'white', left: 300, top: 100 }
     ];
   }
   public dragStart(event: DragEvent, item: Item){
@@ -73,14 +64,15 @@ export class DragItPleaseComponent implements OnInit {
     return this.draggableItems;
   }
 
-  // ---
+  public drop(event: DragEvent) {
 
-  public drop(event: DragEvent, dropZone: string){
     const index = this.draggableItems.indexOf(this.actuallyDragged);
-    console.log('[zone=' + dropZone + '] drop at index: ' + index);
+    // console.log('[zone=' + dropZone + '] drop at index: ' + index);
     this.draggableItems.splice(index, 1);
-    this.droppedItems.push(this.actuallyDragged);
 
+    // ---
+
+    /*
     // add dropped item to dropped item hash...
     if (this.droppedItemsHash.get(dropZone) == null) {
       this.droppedItemsHash.set(dropZone, []);
@@ -92,13 +84,17 @@ export class DragItPleaseComponent implements OnInit {
         console.log(item);
       }
     }
+    */
 
     this.actuallyDragged = undefined;
   }
 
   getDroppedItems(identifier: string) {
-    console.log('get dropped items for identifier: ' + identifier);
-    // return this.droppedItems;
+    // console.log('get dropped items for identifier: ' + identifier);
     return this.droppedItemsHash.get(identifier);
+  }
+
+  waggonClicked(waggonNumber: string) {
+    console.log('waggon clicked: ' + waggonNumber);
   }
 }
