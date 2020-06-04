@@ -1,4 +1,4 @@
-<div class="drag-container">
+<div class>
 
   <!-- occupied tracks -->
   <div *ngFor="let track of getOccupiedTracks()" class="track-item" (click)="trackClicked(track)"
@@ -13,22 +13,16 @@
     <div *ngFor="let waggon of track.waggons" title="{{generateWaggonToolTip(waggon)}}"
          (click)="waggonClicked(waggon)"
          class="waggon-item"
-         [style.height]="30+'px'"
+         [style.height]="20+'px'"
          [style.width]="waggon.renderingLength+'px'"
          [style.left]="(calculateWaggonOffsetOnTrack(waggon))+'px'"
          [style.top]="waggon.y+'px'"
          draggable="true"
-         (dragstart)="dragStart($event, waggon)"
-         (dragend)="dragEnd($event, waggon)">
-    </div><!-- a drop zone for every waggon -->
-    <div *ngFor="let waggon of track.waggons" class="waggon-dropzone"
-         [style.height]="30+'px'"
-         [style.width]="(calculateDropzoneLenght(waggon))+'px'"
-         [style.left]="(calculateDropzoneOffsetOnTrack(waggon))+'px'"
-         [style.top]="(waggon.y)+'px'"
          (dragover)="dragOver($event)"
+         (dragstart)="dragStart($event, waggon)"
+         (dragend)="dragEnd($event, waggon)"
          (drop)="dropWaggonToWaggon($event, waggon)">
-    </div>
+    </div><!-- a drop zone for every waggon -->
   </div>
 
   <!-- empty tracks (completely as drop zone) -->

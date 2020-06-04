@@ -12,9 +12,7 @@ import {Track} from '../shared/track';
 })
 export class DragItPleaseComponent implements OnInit {
 
-  static readonly DROPZONE_WIDTH = 5;
-
-  static readonly TRACK_HEIGHT = 33;
+  static readonly TRACK_HEIGHT = 30;
 
   public droppedItemsHash: Map<string, Item[]>;
 
@@ -36,7 +34,23 @@ export class DragItPleaseComponent implements OnInit {
 
     const waggonsT1 = [
       new Waggon('123', 25),
-      new Waggon('234', 50)
+      new Waggon('234', 50),
+      new Waggon('A1', 50),
+      new Waggon('A1', 50),
+      new Waggon('A1', 50),
+      new Waggon('A1', 50),
+      new Waggon('A1', 37),
+      new Waggon('A1', 50),
+      new Waggon('A1', 42),
+      new Waggon('A1', 50),
+      new Waggon('A1', 50),
+      new Waggon('A1', 88),
+      new Waggon('A1', 50),
+      new Waggon('A1', 50),
+      new Waggon('A1', 19),
+      new Waggon('A1', 50),
+      new Waggon('A1', 50),
+      new Waggon('A1', 50)
     ];
 
     const waggonsT2 = [
@@ -46,10 +60,10 @@ export class DragItPleaseComponent implements OnInit {
     const waggonsT3 = [];
 
     const waggonsT4 = [
-      new Waggon('456', 25),
+      new Waggon('456', 75),
       new Waggon('567', 25),
-      new Waggon('678', 25),
-      new Waggon('789', 25),
+      new Waggon('678', 33),
+      new Waggon('789', 47),
       new Waggon('890', 25),
     ];
 
@@ -57,7 +71,7 @@ export class DragItPleaseComponent implements OnInit {
       new Track('T1', 100, 100, 0, waggonsT1, 2400),
       new Track('T2', 50, 200, 0, waggonsT2, 300),
       new Track('T3', 25, 300, 0, waggonsT3, 200),
-      new Track('T4', 175, 400, 80, waggonsT4, 1550)
+      new Track('T4', 175, 400, 67, waggonsT4, 1550)
     ];
   }
 
@@ -124,36 +138,24 @@ export class DragItPleaseComponent implements OnInit {
   }
 
   calculateWaggonOffsetOnTrack(waggon: Waggon) {
-    let result = 0;
+    let result = 25;
     // console.log('calculate waggon offset for waggon ' + waggon.waggonNumber + ' on track: ' + waggon.track.trackNumber);
     const index = waggon.track.waggons.indexOf(waggon);
     for (let i = 0; i < index; i++) {
       // console.log('regarding previous waggon: ' + waggon.track.waggons[i].waggonNumber);
-      result += waggon.track.waggons[i].renderingLength + DragItPleaseComponent.DROPZONE_WIDTH + 20;
+      result += waggon.track.waggons[i].renderingLength + 5;
     }
     return result;
-  }
-
-  calculateDropzoneOffsetOnTrack(waggon: Waggon) {
-    return this.calculateWaggonOffsetOnTrack(waggon) + waggon.renderingLength;
   }
 
   isLastWaggonOnTrack(waggon: Waggon) {
     return (waggon.track.waggons.indexOf(waggon) === waggon.track.waggons.length - 1);
   }
 
-  calculateDropzoneLenght(waggon: Waggon) {
-    if (this.isLastWaggonOnTrack(waggon) || this.isTrackEmpty(waggon.track)) {
-      return this.getEmptyTrackLenght(waggon);
-    }
-    // return DragItPleaseComponent.DROPZONE_WIDTH;
-    return 15;
-  }
-
   getEmptyTrackLenght(waggon: Waggon) {
     let occupiedTrackLenght = 0;
     for (const w of waggon.track.waggons) {
-      occupiedTrackLenght += w.renderingLength + DragItPleaseComponent.DROPZONE_WIDTH + 20;
+      occupiedTrackLenght += w.renderingLength + 50;
     }
     return (waggon.track.lenght - occupiedTrackLenght);
   }
