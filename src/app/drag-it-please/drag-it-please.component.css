@@ -1,7 +1,7 @@
 .drag-container {
   position: relative;
   width: 800px;
-  height: 400px;
+  height: 600px;
   overflow: hidden;
   border: 1px solid silver;
 }
@@ -12,16 +12,10 @@
   border: 1px solid black;
 }
 
-.waggon-test {
-  position: absolute;
-  border: 1px solid silver;
-  background-color: powderblue;
-}
-
 .track-item {
   position: absolute;
   border: 1px solid silver;
-  transform: rotate(45deg);
+  transform: rotate(0deg);
 }
 
 .waggon-item {

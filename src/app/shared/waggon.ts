@@ -1,3 +1,5 @@
+import {Track} from './track';
+
 export class Waggon {
 
   waggonNumber: string;
@@ -11,6 +13,8 @@ export class Waggon {
   index: number;
 
   renderingLength: number;
+
+  public track: Track;
 
   constructor(aWaggonNumber: string, aX: number, aY: number, aTrackNumber: string, aIndex: number, aRenderingLength: number) {
     this.waggonNumber = aWaggonNumber;
