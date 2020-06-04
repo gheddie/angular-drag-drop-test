@@ -26,8 +26,6 @@ export class DragItPleaseComponent implements OnInit {
 
   public tracks: Track[] = [];
 
-  tooltipText: string = '123';
-
   constructor() {
     // ...
   }
@@ -201,23 +199,17 @@ export class DragItPleaseComponent implements OnInit {
     }
   }
 
-  toggleToolTip(event: MouseEvent, aWaggon: Waggon, aEntered: boolean) {
-    const element = document.getElementById('tt_display');
-    if (aEntered) {
-      console.log('waggon entered: ' + aWaggon.waggonNumber + ', [x:' + event.clientX + '|y:' + event.clientY + '].');
-      this.tooltipText = aWaggon.waggonNumber;
-      const top = event.y;
-      const left = event.x;
-      element.style.setProperty('top', top + 'px');
-      element.style.setProperty('left', left + 'px');
-      element.style.setProperty('visibility', 'visible');
-    } else {
-      console.log('waggon exited: ' + aWaggon.waggonNumber);
-      element.style.setProperty('visibility', 'hidden');
-    }
+  generateTrackToolTip(aTrack: Track) {
+    let toolTip = '';
+    toolTip += 'Gleis-Nr.:' + aTrack.trackNumber;
+    return toolTip;
   }
 
-  generateToolTip() {
-    return this.tooltipText;
+  generateWaggonToolTip(aWaggon: Waggon) {
+    let toolTip = '';
+    toolTip += 'Waggen-Nr.:' + aWaggon.waggonNumber;
+    toolTip += '\n';
+    toolTip += 'Länge:' + aWaggon.renderingLength;
+    return toolTip;
   }
 }
