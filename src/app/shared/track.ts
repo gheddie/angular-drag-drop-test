@@ -16,7 +16,9 @@ export class Track {
 
   waggons: Waggon[];
 
-  constructor(aTrackNumber: string, axFrom: number, ayFrom: number, axTo: number, ayTo: number, aIndex: number, aWaggons: Waggon[]) {
+  lenght: number;
+
+  constructor(aTrackNumber: string, axFrom: number, ayFrom: number, axTo: number, ayTo: number, aIndex: number, aWaggons: Waggon[], aLenght: number) {
     this.trackNumber = aTrackNumber;
     this.xFrom = axFrom;
     this.yFrom = ayFrom;
@@ -24,8 +26,11 @@ export class Track {
     this.yTo = ayTo;
     this.index = aIndex;
     this.waggons = aWaggons;
-    for (const waggon of this.waggons) {
-      waggon.track = this;
+    this.lenght = aLenght;
+    if (this.waggons != null) {
+      for (const waggon of this.waggons) {
+        waggon.track = this;
+      }
     }
   }
 }

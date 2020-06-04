@@ -41,9 +41,13 @@ export class DragItPleaseComponent implements OnInit {
       new Waggon('345', 210, 10, 'T2', 0, 50)
     ];
 
+    const waggonsT3 = [];
+
     this.tracks = [
-      new Track('T1', 0, 100, 0, 0, 0, waggonsT1),
-      new Track('T2', 0, 300, 0, 0, 0, waggonsT2)
+      new Track('T1', 0, 100, 0, 0, 0, waggonsT1, 400),
+      new Track('T2', 0, 200, 0, 0, 0, waggonsT2, 300),
+      new Track('T3', 0, 300, 0, 0, 0, waggonsT3, 200),
+      new Track('T4', 0, 400, 0, 0, 0, null, 550)
     ];
   }
 
@@ -98,5 +102,28 @@ export class DragItPleaseComponent implements OnInit {
 
   calculateDropzoneOffsetOnTrack(waggon: Waggon) {
     return this.calculateWaggonOffsetOnTrack(waggon) + waggon.renderingLength + DragItPleaseComponent.DROPZONE_WIDTH;
+  }
+
+  isLastWaggonOnTrack(waggon: Waggon) {
+    return (waggon.track.waggons.indexOf(waggon) === waggon.track.waggons.length - 1);
+  }
+
+  calculateDropzoneLenght(waggon: Waggon) {
+    if (this.isLastWaggonOnTrack(waggon) || this.isTrackEmpty(waggon.track)) {
+      return this.getEmptyTrackLenght(waggon);
+    }
+    return 15;
+  }
+
+  getEmptyTrackLenght(waggon: Waggon) {
+    let occupiedTrackLenght = 0;
+    for (const w of waggon.track.waggons) {
+      occupiedTrackLenght += w.renderingLength + DragItPleaseComponent.DROPZONE_WIDTH + 20;
+    }
+    return (waggon.track.lenght - occupiedTrackLenght);
+  }
+
+  private isTrackEmpty(track: Track) {
+    return (track.waggons == null || track.waggons.length === 0);
   }
 }

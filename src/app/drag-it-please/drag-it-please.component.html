@@ -3,7 +3,7 @@
        [style.left]="200+'px'"
        [style.top]="track.yFrom+'px'"
        [style.height]="50+'px'"
-       [style.width]="400+'px'">
+       [style.width]="track.lenght+'px'">
     <!-- all the waggons -->
     <div *ngFor="let waggon of track.waggons"
          class="waggon-item"
@@ -18,7 +18,7 @@
     </div><!-- a drop zone for every waggon -->
     <div *ngFor="let waggon of track.waggons" class="waggon-dropzone"
          [style.height]="30+'px'"
-         [style.width]="15+'px'"
+         [style.width]="(calculateDropzoneLenght(waggon))+'px'"
          [style.left]="(calculateDropzoneOffsetOnTrack(waggon))+'px'"
          [style.top]="(waggon.y)+'px'"
          (dragover)="dragOver($event)"
