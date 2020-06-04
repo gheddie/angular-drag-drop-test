@@ -14,6 +14,8 @@ export class DragItPleaseComponent implements OnInit {
 
   static readonly DROPZONE_WIDTH = 5;
 
+  static readonly TRACK_HEIGHT = 33;
+
   public droppedItemsHash: Map<string, Item[]>;
 
   public actuallyDragged: Waggon;
@@ -33,12 +35,12 @@ export class DragItPleaseComponent implements OnInit {
     this.droppedItemsHash = new Map<string, Item[]>();
 
     const waggonsT1 = [
-      new Waggon('123', 10, 10, 'T1', 0, 25),
-      new Waggon('234', 110, 10, 'T1', 1, 50)
+      new Waggon('123', 10, 0, 'T1', 0, 25),
+      new Waggon('234', 110, 0, 'T1', 1, 50)
     ];
 
     const waggonsT2 = [
-      new Waggon('345', 210, 10, 'T2', 0, 50)
+      new Waggon('345', 210, 0, 'T2', 0, 50)
     ];
 
     const waggonsT3 = [];
@@ -68,15 +70,12 @@ export class DragItPleaseComponent implements OnInit {
   }
 
   public dropWaggonToWaggon(event: DragEvent, targetWaggon : Waggon) {
+    console.log('dropped waggon ' + this.actuallyDragged.waggonNumber + ' to waggon ' + targetWaggon.waggonNumber + '.');
+    this.actuallyDragged = undefined;
+  }
 
-    console.log('dropped waggon ' + this.actuallyDragged.waggonNumber + ' to waggon ' + targetWaggon.waggonNumber + ' [target=' + targetWaggon.waggonNumber + '].');
-
-    /*
-    const index = this.waggons.indexOf(this.actuallyDragged);
-    // console.log('[zone=' + dropZone + '] drop at index: ' + index);
-    this.waggons.splice(index, 1);
-    */
-
+  public dropWaggonToTrack(event: DragEvent, targetTrack : Track) {
+    console.log('dropped waggon ' + this.actuallyDragged.waggonNumber + ' to waggon ' + targetTrack.trackNumber + '.');
     this.actuallyDragged = undefined;
   }
 
@@ -127,7 +126,27 @@ export class DragItPleaseComponent implements OnInit {
     return (track.waggons == null || track.waggons.length === 0);
   }
 
-  public dropWaggonToTrack(event: DragEvent, targetTrack : Track) {
+  getOccupiedTracks() {
+    const result = new Array();
+    for (const t of this.tracks) {
+      if (!this.isTrackEmpty(t)) {
+        result.push(t);
+      }
+    }
+    return result;
+  }
 
+  getEmptyTracks() {
+    const result = new Array();
+    for (const t of this.tracks) {
+      if (this.isTrackEmpty(t)) {
+        result.push(t);
+      }
+    }
+    return result;
+  }
+
+  getTrackHeight() {
+    return DragItPleaseComponent.TRACK_HEIGHT;
   }
 }
