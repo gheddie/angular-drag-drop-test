@@ -31,9 +31,9 @@ export class DragItPleaseComponent implements OnInit {
 
     this.waggons = [
       // T1
-      new Waggon('123', 10, 200, 'T1', 0, 25),
-      new Waggon('234', 110, 250, 'T1', 1, 50),
-      new Waggon('345', 210, 300, 'T1', 2, 50),
+      new Waggon('123', 10, 10, 'T1', 0, 25),
+      new Waggon('234', 110, 10, 'T1', 1, 50),
+      new Waggon('345', 210, 10, 'T1', 2, 50),
     ];
   }
 

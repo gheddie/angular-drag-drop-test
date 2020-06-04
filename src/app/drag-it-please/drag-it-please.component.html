@@ -1,53 +1,28 @@
 <div class="drag-container">
-  <!-- all the waggons -->
-  <div *ngFor="let waggon of waggons"
-       class="waggon-item"
-       [style.height]="30+'px'"
-       [style.width]="waggon.renderingLength+'px'"
-       [style.left]="waggon.x+'px'"
-       [style.top]="waggon.y+'px'"
-       draggable="true"
-       (dragstart)="dragStart($event, waggon)"
-       (dragend)="dragEnd($event, waggon)">
-    {{ waggon.waggonNumber }}
-  </div><!-- a drop zone for every waggon -->
-  <div *ngFor="let waggon of waggons" class="waggon-dropzone"
-       [style.height]="30+'px'"
-       [style.width]="15+'px'"
-       [style.left]="(waggon.x + waggon.renderingLength+5)+'px'"
-       [style.top]="(waggon.y)+'px'"
-       (dragover)="dragOver($event)"
-       (drop)="drop($event)">
-  </div>
-
   <div class="track-item"
-       [style.left]="100+'px'"
-       [style.top]="100+'px'"
-       [style.height]="40+'px'"
-       [style.width]="200+'px'">
-    <div class="waggon-test"
-         [style.left]="10+'px'"
-         [style.top]="10+'px'"
-         [style.height]="20+'px'"
-         [style.width]="15+'px'">
-    </div>
-    <div class="waggon-test"
-         [style.left]="30+'px'"
-         [style.top]="10+'px'"
-         [style.height]="20+'px'"
-         [style.width]="15+'px'">
-    </div>
-    <div class="waggon-test"
-         [style.left]="50+'px'"
-         [style.top]="10+'px'"
-         [style.height]="20+'px'"
-         [style.width]="15+'px'">
-    </div>
-    <div class="waggon-test"
-         [style.left]="70+'px'"
-         [style.top]="10+'px'"
-         [style.height]="20+'px'"
-         [style.width]="15+'px'">
+       [style.left]="200+'px'"
+       [style.top]="200+'px'"
+       [style.height]="50+'px'"
+       [style.width]="400+'px'">
+    <!-- all the waggons -->
+    <div *ngFor="let waggon of waggons"
+         class="waggon-item"
+         [style.height]="30+'px'"
+         [style.width]="waggon.renderingLength+'px'"
+         [style.left]="waggon.x+'px'"
+         [style.top]="waggon.y+'px'"
+         draggable="true"
+         (dragstart)="dragStart($event, waggon)"
+         (dragend)="dragEnd($event, waggon)">
+      {{ waggon.waggonNumber }}
+    </div><!-- a drop zone for every waggon -->
+    <div *ngFor="let waggon of waggons" class="waggon-dropzone"
+         [style.height]="30+'px'"
+         [style.width]="15+'px'"
+         [style.left]="(waggon.x + waggon.renderingLength+5)+'px'"
+         [style.top]="(waggon.y)+'px'"
+         (dragover)="dragOver($event)"
+         (drop)="drop($event)">
     </div>
   </div>
 </div>
