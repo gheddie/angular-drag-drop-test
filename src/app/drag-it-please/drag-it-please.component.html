@@ -1,51 +1,29 @@
-<p>drag-it-please works!</p>
-
 <div class="drag-container">
-
-  <!--
-  <div *ngFor="let dropzone of dropZones" class="drop-zone">
-    <div *ngFor="let item of getDroppedItems(dropzone)"
-         class="dropped-item"
-         [style.background-color]="item.color">
-      {{ item.text }}
-    </div>
-  </div>
-  -->
-
-  <!--
-  <svg height="800" width="1200">
-    <line
-          [attr.x1]="10"
-          [attr.y1]="10"
-          [attr.x2]="100"
-          [attr.y2]="10"
-          style="stroke:rgb(0,0,0);stroke-width:2">
-    </line>
-  </svg>
-  -->
-
   <!-- all the waggons -->
-  <div *ngFor="let item of getDraggableItems()"
-       class="draggable-item"
-       [style.height]="50+'px'"
-       [style.width]="75+'px'"
-       [style.left]="item.left+'px'"
-       [style.top]="item.top+'px'"
-       [style.background-color]="item.color"
+  <div *ngFor="let waggon of waggons"
+       class="waggon-item"
+       [style.height]="30+'px'"
+       [style.width]="waggon.renderingLength+'px'"
+       [style.left]="waggon.x+'px'"
+       [style.top]="waggon.y+'px'"
        draggable="true"
-       (dragstart)="dragStart($event, item)"
-       (dragend)="dragEnd($event, item)">
-    {{ item.text }}
+       (dragstart)="dragStart($event, waggon)"
+       (dragend)="dragEnd($event, waggon)">
+    {{ waggon.waggonNumber }}
+  </div><!-- a drop zone for every waggon -->
+  <div *ngFor="let waggon of waggons" class="waggon-dropzone"
+       [style.height]="30+'px'"
+       [style.width]="15+'px'"
+       [style.left]="(waggon.x + waggon.renderingLength+5)+'px'"
+       [style.top]="(waggon.y)+'px'"
+       (dragover)="dragOver($event)"
+       (drop)="drop($event)">
   </div>
 
-</div>
-
-<!-- a drop zone for every waggon -->
-<div *ngFor="let item of getDraggableItems()" class="drop-zone"
-     [style.height]="30+'px'"
-     [style.width]="30+'px'"
-     [style.left]="item.left+'px'"
-     [style.top]="(item.top+200)+'px'"
-     (dragover)="dragOver($event)"
-     (drop)="drop($event)">
+  <div class="track-item"
+       [style.left]="100+'px'"
+       [style.top]="100+'px'"
+       [style.height]="50+'px'"
+       [style.width]="200+'px'">
+  </div>
 </div>

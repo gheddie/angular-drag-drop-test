@@ -3,22 +3,29 @@
   width: 800px;
   height: 400px;
   overflow: hidden;
+  border: 1px solid silver;
 }
 
-.drop-zone {
+.waggon-dropzone {
   position: absolute;
   background-color: white;
   border: 1px solid silver;
 }
 
-.draggable-item {
+.track-item {
+  position: absolute;
+  border: 1px solid silver;
+  transform: rotate(30deg);
+}
+
+.waggon-item {
   position: absolute;
   border-radius: 0%;
   border: 1px solid silver;
   text-align: center;
   line-height: 30px;
   transform: rotate(0deg);
-  background: linear-gradient(0deg, transparent 49%, #000 50%, transparent 51%);
+  /*background: linear-gradient(0deg, transparent 49%, #000 50%, transparent 51%);*/
 }
 
 .dropped-item {
