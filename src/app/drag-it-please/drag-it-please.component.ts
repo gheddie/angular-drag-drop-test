@@ -26,6 +26,8 @@ export class DragItPleaseComponent implements OnInit {
 
   public tracks: Track[] = [];
 
+  tooltipText: string = '123';
+
   constructor() {
     // ...
   }
@@ -54,20 +56,11 @@ export class DragItPleaseComponent implements OnInit {
     ];
 
     this.tracks = [
-      new Track('T1', 100, 100, 0, waggonsT1, 400),
+      new Track('T1', 100, 100, 0, waggonsT1, 2400),
       new Track('T2', 50, 200, 0, waggonsT2, 300),
       new Track('T3', 25, 300, 0, waggonsT3, 200),
-      new Track('T4', 175, 400, 0, waggonsT4, 550)
+      new Track('T4', 175, 400, 80, waggonsT4, 1550)
     ];
-
-    /*
-    this.tracks = [
-      new Track('T1', 0, 100, 0, 0, 0, null, 400),
-      new Track('T2', 0, 200, 0, 0, 0, null, 300),
-      new Track('T3', 0, 300, 0, 0, 0, null, 200),
-      new Track('T4', 0, 400, 0, 0, 0, waggonsT4, 550)
-    ];
-    */
   }
 
   public dragStart(event: DragEvent, waggon: Waggon){
@@ -206,5 +199,25 @@ export class DragItPleaseComponent implements OnInit {
         }
       }
     }
+  }
+
+  toggleToolTip(event: MouseEvent, aWaggon: Waggon, aEntered: boolean) {
+    const element = document.getElementById('tt_display');
+    if (aEntered) {
+      console.log('waggon entered: ' + aWaggon.waggonNumber + ', [x:' + event.clientX + '|y:' + event.clientY + '].');
+      this.tooltipText = aWaggon.waggonNumber;
+      const top = event.y;
+      const left = event.x;
+      element.style.setProperty('top', top + 'px');
+      element.style.setProperty('left', left + 'px');
+      element.style.setProperty('visibility', 'visible');
+    } else {
+      console.log('waggon exited: ' + aWaggon.waggonNumber);
+      element.style.setProperty('visibility', 'hidden');
+    }
+  }
+
+  generateToolTip() {
+    return this.tooltipText;
   }
 }

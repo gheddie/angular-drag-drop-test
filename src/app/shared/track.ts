@@ -8,17 +8,17 @@ export class Track {
 
   yFrom: number;
 
-  index: number;
+  rotation: number;
 
   waggons: Waggon[];
 
   lenght: number;
 
-  constructor(aTrackNumber: string, axFrom: number, ayFrom: number, aIndex: number, aWaggons: Waggon[], aLenght: number) {
+  constructor(aTrackNumber: string, axFrom: number, ayFrom: number, aRotation: number, aWaggons: Waggon[], aLenght: number) {
     this.trackNumber = aTrackNumber;
     this.xFrom = axFrom;
     this.yFrom = ayFrom;
-    this.index = aIndex;
+    this.rotation = aRotation;
     if (aWaggons != null) {
       this.waggons = aWaggons;
     } else {

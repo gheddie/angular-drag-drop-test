@@ -2,8 +2,9 @@
   position: relative;
   width: 800px;
   height: 600px;
-  overflow: hidden;
+  overflow: auto;
   border: 1px solid silver;
+  transform: scale(1);
 }
 
 .waggon-dropzone {
@@ -15,7 +16,8 @@
 .track-item {
   position: absolute;
   border: 1px solid silver;
-  transform: rotate(0deg);
+  /*transform: rotate(0deg);*/
+  transform-origin: top left;
 }
 
 .waggon-item {
@@ -32,4 +34,12 @@
 .dropped-item {
   text-align: center;
   line-height: 20px;
+}
+
+.tooltip {
+  position: absolute;
+  top: 200px;
+  left: 200px;
+  background-color: lightgray;
+  /*border: 1px solid black;*/
 }

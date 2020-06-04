@@ -5,9 +5,14 @@
        [style.left]="track.xFrom+'px'"
        [style.top]="track.yFrom+'px'"
        [style.height]="getTrackHeight()+'px'"
+       [style.transform]="'rotate('+(track.rotation)+'deg)'"
        [style.width]="track.lenght+'px'">
+
     <!-- all the waggons -->
-    <div *ngFor="let waggon of track.waggons" (click)="waggonClicked(waggon)"
+    <div *ngFor="let waggon of track.waggons"
+         (click)="waggonClicked(waggon)"
+         (mouseenter)="toggleToolTip($event, waggon, true)"
+         (mouseleave)="toggleToolTip($event, waggon, false)"
          class="waggon-item"
          [style.height]="30+'px'"
          [style.width]="waggon.renderingLength+'px'"
@@ -16,7 +21,7 @@
          draggable="true"
          (dragstart)="dragStart($event, waggon)"
          (dragend)="dragEnd($event, waggon)">
-      {{ waggon.waggonNumber }}
+      <!-- {{ waggon.waggonNumber }} -->
     </div><!-- a drop zone for every waggon -->
     <div *ngFor="let waggon of track.waggons" class="waggon-dropzone"
          [style.height]="30+'px'"
@@ -34,5 +39,11 @@
        [style.top]="track.yFrom+'px'"
        [style.height]="getTrackHeight()+'px'"
        [style.width]="track.lenght+'px'"
-       (dragover)="dragOver($event)" (drop)="dropWaggonToTrack($event, track)"></div>
+       [style.transform]="'rotate('+(track.rotation)+'deg)'"
+       (dragover)="dragOver($event)" (drop)="dropWaggonToTrack($event, track)">
+  </div>
+
+  <!-- tooltip -->
+  <div id="tt_display" class="tooltip">{{generateToolTip()}}</div>
+
 </div>
