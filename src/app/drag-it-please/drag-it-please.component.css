@@ -9,13 +9,19 @@
 .waggon-dropzone {
   position: absolute;
   background-color: white;
+  border: 1px solid black;
+}
+
+.waggon-test {
+  position: absolute;
   border: 1px solid silver;
+  background-color: powderblue;
 }
 
 .track-item {
   position: absolute;
   border: 1px solid silver;
-  transform: rotate(30deg);
+  transform: rotate(45deg);
 }
 
 .waggon-item {
