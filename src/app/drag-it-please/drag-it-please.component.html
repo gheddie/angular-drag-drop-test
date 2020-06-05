@@ -1,7 +1,4 @@
 <div class>
-
-  <p>Gleis-Reihungen</p>
-
   <!-- occupied tracks -->
   <div *ngFor="let track of getOccupiedTracks()" class="track-item" (click)="trackClicked(track)"
        title="{{generateTrackToolTip(track)}}"
@@ -40,5 +37,4 @@
        [style.transform]="'rotate('+(track.rotation)+'deg)'"
        (dragover)="dragOver($event)" (drop)="dropWaggonToTrack($event, track)">
   </div>
-
 </div>

@@ -20,3 +20,7 @@
   text-align: center;
   transform: rotate(0deg);
 }
+
+.shuntingorder {
+  border: 1px solid black;
+}

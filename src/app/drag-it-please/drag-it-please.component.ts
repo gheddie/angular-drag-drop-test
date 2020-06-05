@@ -4,6 +4,7 @@ import {Waggon} from '../shared/waggon';
 import {Track} from '../shared/track';
 import {Point} from '../shared/point';
 import {TrackPositioner} from '../shared/track-positioner';
+import {ShuntingOrder} from '../shared/shunting-order';
 
 // https://entwickler.de/online/javascript/angular-d3-js-drag-drop-579852258.html
 
@@ -26,6 +27,10 @@ export class DragItPleaseComponent implements OnInit {
 
   public tracks: Track[] = [];
 
+  public shuntingOrders: ShuntingOrder[] = [];
+
+  public selectedWaggons: Waggon[] = [];
+
   private trackPositioner: TrackPositioner;
 
   constructor(aTrackPositioner: TrackPositioner) {
@@ -35,6 +40,12 @@ export class DragItPleaseComponent implements OnInit {
   ngOnInit(): void {
 
     this.droppedItemsHash = new Map<string, Item[]>();
+
+    this.shuntingOrders = [
+      new ShuntingOrder(),
+      new ShuntingOrder(),
+      new ShuntingOrder()
+    ];
 
     const waggonsT1 = [
       new Waggon('T1_1', 25),
@@ -148,32 +159,25 @@ export class DragItPleaseComponent implements OnInit {
     console.log('dropped waggon ' + this.actuallyDragged.waggonNumber + ' to waggon '
       + targetWaggon.waggonNumber + ' [target track=' + targetWaggon.track.trackNumber + '].');
 
-    const droppedWaggon = this.actuallyDragged;
-    // remove waggon from source track...
-    targetWaggon.track.removeWaggon(droppedWaggon);
-    // add waggon to target track...
-    targetWaggon.track.waggons.splice((targetWaggon.track.waggons.indexOf(targetWaggon) + 1), 0, droppedWaggon);
+    this.moveWaggonToWaggon(this.actuallyDragged, targetWaggon);
 
-    droppedWaggon.track = targetWaggon.track;
+    this.createShuntingOrder();
 
     this.actuallyDragged = undefined;
     this.debugTrackWaggons();
   }
 
   public dropWaggonToTrack(event: DragEvent, targetTrack: Track) {
+
     console.log('dropped waggon ' + this.actuallyDragged.waggonNumber + ' to track ' + targetTrack.trackNumber + '.');
 
-    const droppedWaggon = this.actuallyDragged;
+    this.moveWaggonToTrack(this.actuallyDragged, targetTrack);
 
-    // remove waggon from source track...
-    targetTrack.removeWaggon(this.actuallyDragged);
-    // add waggon to target track...
-    targetTrack.waggons.push(this.actuallyDragged);
-
-    droppedWaggon.track = targetTrack;
+    this.createShuntingOrder();
 
     this.actuallyDragged = undefined;
-    this.debugTrackWaggons();
+
+    // this.debugTrackWaggons();
   }
 
   getDroppedItems(identifier: string) {
@@ -184,6 +188,15 @@ export class DragItPleaseComponent implements OnInit {
   waggonClicked(aWaggon: Waggon) {
     aWaggon.toggleSelection();
     console.log('waggon clicked: ' + aWaggon.waggonNumber + ' [selected:' + aWaggon.selected + ']');
+    if (aWaggon.selected) {
+      this.selectedWaggons.push(aWaggon);
+    } else {
+      this.selectedWaggons.splice(this.selectedWaggons.indexOf(aWaggon), 1);
+    }
+    console.log('------------ SELECTION:');
+    for (const w of this.selectedWaggons) {
+      console.log(w.waggonNumber);
+    }
   }
 
   trackClicked(aTrack: Track) {
@@ -255,6 +268,7 @@ export class DragItPleaseComponent implements OnInit {
   }
 
   generateTrackToolTip(aTrack: Track) {
+
     let toolTip = '';
     toolTip += 'Gleis-Nr.: ' + aTrack.trackNumber;
     toolTip += '\n';
@@ -321,5 +335,31 @@ export class DragItPleaseComponent implements OnInit {
       return 'lightgray';
     }
     return 'white';
+  }
+
+  private createShuntingOrder() {
+    // this.shuntingOrders.push(new ShuntingOrder());
+  }
+
+  // ---
+
+  moveWaggonToWaggon(sourceWaggon: Waggon, targetWaggon: Waggon) {
+
+    const droppedWaggon = sourceWaggon;
+    // remove waggon from source track...
+    targetWaggon.track.removeWaggon(droppedWaggon);
+    // add waggon to target track...
+    targetWaggon.track.waggons.splice((targetWaggon.track.waggons.indexOf(targetWaggon) + 1), 0, droppedWaggon);
+    droppedWaggon.track = targetWaggon.track;
+  }
+
+  moveWaggonToTrack(sourceWaggon: Waggon, targetTrack: Track) {
+
+    const droppedWaggon = sourceWaggon;
+    // remove waggon from source track...
+    targetTrack.removeWaggon(this.actuallyDragged);
+    // add waggon to target track...
+    targetTrack.waggons.push(this.actuallyDragged);
+    droppedWaggon.track = targetTrack;
   }
 }
