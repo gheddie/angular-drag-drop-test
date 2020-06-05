@@ -3,8 +3,8 @@
   <!-- occupied tracks -->
   <div *ngFor="let track of getOccupiedTracks()" class="track-item" (click)="trackClicked(track)"
        title="{{generateTrackToolTip(track)}}"
-       [style.left]="track.xFrom+'px'"
-       [style.top]="track.yFrom+'px'"
+       [style.left]="calculateTrackOriginX(track)+'px'"
+       [style.top]="calculateTrackOriginY(track)+'px'"
        [style.height]="getTrackHeight()+'px'"
        [style.transform]="'rotate('+(track.rotation)+'deg)'"
        [style.width]="track.lenght+'px'">
@@ -13,7 +13,7 @@
     <div *ngFor="let waggon of track.waggons" title="{{generateWaggonToolTip(waggon)}}"
          (click)="waggonClicked(waggon)"
          class="waggon-item"
-         [style.height]="20+'px'"
+         [style.height]="10+'px'"
          [style.width]="waggon.renderingLength+'px'"
          [style.left]="(calculateWaggonOffsetOnTrack(waggon))+'px'"
          [style.top]="waggon.y+'px'"
@@ -28,8 +28,8 @@
   <!-- empty tracks (completely as drop zone) -->
   <div *ngFor="let track of getEmptyTracks()" class="track-item" (click)="trackClicked(track)"
        title="{{generateTrackToolTip(track)}}"
-       [style.left]="track.xFrom+'px'"
-       [style.top]="track.yFrom+'px'"
+       [style.left]="calculateTrackOriginX(track)+'px'"
+       [style.top]="calculateTrackOriginY(track)+'px'"
        [style.height]="getTrackHeight()+'px'"
        [style.width]="track.lenght+'px'"
        [style.transform]="'rotate('+(track.rotation)+'deg)'"

@@ -12,7 +12,7 @@ import {Track} from '../shared/track';
 })
 export class DragItPleaseComponent implements OnInit {
 
-  static readonly TRACK_HEIGHT = 30;
+  static readonly TRACK_HEIGHT = 20;
 
   public droppedItemsHash: Map<string, Item[]>;
 
@@ -34,23 +34,7 @@ export class DragItPleaseComponent implements OnInit {
 
     const waggonsT1 = [
       new Waggon('123', 25),
-      new Waggon('234', 50),
-      new Waggon('A1', 50),
-      new Waggon('A1', 50),
-      new Waggon('A1', 50),
-      new Waggon('A1', 50),
-      new Waggon('A1', 37),
-      new Waggon('A1', 50),
-      new Waggon('A1', 42),
-      new Waggon('A1', 50),
-      new Waggon('A1', 50),
-      new Waggon('A1', 88),
-      new Waggon('A1', 50),
-      new Waggon('A1', 50),
-      new Waggon('A1', 19),
-      new Waggon('A1', 50),
-      new Waggon('A1', 50),
-      new Waggon('A1', 50)
+      new Waggon('234', 50)
     ];
 
     const waggonsT2 = [
@@ -67,12 +51,23 @@ export class DragItPleaseComponent implements OnInit {
       new Waggon('890', 25),
     ];
 
+    const t1 = new Track('T1', 100, 100, 0, waggonsT1, 440, null);
+    const t2 = new Track('T2', 50, 200, 45, waggonsT2, 300, t1);
+
     this.tracks = [
-      new Track('T1', 100, 100, 0, waggonsT1, 2400),
-      new Track('T2', 50, 200, 0, waggonsT2, 300),
-      new Track('T3', 25, 300, 0, waggonsT3, 200),
-      new Track('T4', 175, 400, 67, waggonsT4, 1550)
+      t1, t2
     ];
+
+    /*
+    const t1 = new Track('T1', 100, 100, 0, waggonsT1, 2400, null);
+    const t2 = new Track('T2', 50, 200, 0, waggonsT2, 300, null);
+    const t3 = new Track('T3', 25, 300, 0, waggonsT3, 200, null);
+    const t4 = new Track('T4', 175, 400, 67, waggonsT4, 1550, null);
+
+    this.tracks = [
+      t1, t2, t3, t4
+    ];
+    */
   }
 
   public dragStart(event: DragEvent, waggon: Waggon){
@@ -213,5 +208,19 @@ export class DragItPleaseComponent implements OnInit {
     toolTip += '\n';
     toolTip += 'Länge:' + aWaggon.renderingLength;
     return toolTip;
+  }
+
+  calculateTrackOriginX(aTrack: Track) {
+    if (aTrack.parent == null) {
+      return aTrack.xFrom;
+    }
+    return 100;
+  }
+
+  calculateTrackOriginY(aTrack: Track) {
+    if (aTrack.parent == null) {
+      return aTrack.yFrom;
+    }
+    return 100;
   }
 }

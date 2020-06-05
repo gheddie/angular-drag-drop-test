@@ -14,7 +14,9 @@ export class Track {
 
   lenght: number;
 
-  constructor(aTrackNumber: string, axFrom: number, ayFrom: number, aRotation: number, aWaggons: Waggon[], aLenght: number) {
+  parent: Track;
+
+  constructor(aTrackNumber: string, axFrom: number, ayFrom: number, aRotation: number, aWaggons: Waggon[], aLenght: number, aParent: Track) {
     this.trackNumber = aTrackNumber;
     this.xFrom = axFrom;
     this.yFrom = ayFrom;
@@ -30,6 +32,7 @@ export class Track {
         waggon.track = this;
       }
     }
+    this.parent = aParent;
   }
 
   removeWaggon(waggonToRemove: Waggon) {
