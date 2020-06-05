@@ -318,7 +318,7 @@ export class DragItPleaseComponent implements OnInit {
 
   getWaggonRenderingColor(aWaggon: Waggon) {
     if (aWaggon.selected) {
-      return 'red';
+      return 'lightgray';
     }
     return 'white';
   }
