@@ -1,5 +1,7 @@
 <div class>
 
+  <p>Gleis-Reihungen</p>
+
   <!-- occupied tracks -->
   <div *ngFor="let track of getOccupiedTracks()" class="track-item" (click)="trackClicked(track)"
        title="{{generateTrackToolTip(track)}}"
@@ -17,6 +19,9 @@
          [style.width]="waggon.renderingLength+'px'"
          [style.left]="(calculateWaggonOffsetOnTrack(waggon))+'px'"
          [style.top]="waggon.y+'px'"
+
+         [style.background]="getWaggonRenderingColor(waggon)"
+
          draggable="true"
          (dragover)="dragOver($event)"
          (dragstart)="dragStart($event, waggon)"

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {Item} from '../shared/item';
 import {Waggon} from '../shared/waggon';
 import {Track} from '../shared/track';
+import {Point} from '../shared/point';
+import {TrackPositioner} from '../shared/track-positioner';
 
 // https://entwickler.de/online/javascript/angular-d3-js-drag-drop-579852258.html
 
@@ -24,8 +26,10 @@ export class DragItPleaseComponent implements OnInit {
 
   public tracks: Track[] = [];
 
-  constructor() {
-    // ...
+  private trackPositioner: TrackPositioner;
+
+  constructor(aTrackPositioner: TrackPositioner) {
+    this.trackPositioner = aTrackPositioner;
   }
 
   ngOnInit(): void {
@@ -33,29 +37,82 @@ export class DragItPleaseComponent implements OnInit {
     this.droppedItemsHash = new Map<string, Item[]>();
 
     const waggonsT1 = [
-      new Waggon('123', 25),
-      new Waggon('234', 50)
+      new Waggon('T1_1', 25),
+      new Waggon('T1_2', 50),
+      new Waggon('T1_3', 50),
+      new Waggon('T1_4', 50),
+      new Waggon('T1_5', 50)
     ];
 
     const waggonsT2 = [
-      new Waggon('345', 50)
+      new Waggon('T2_1', 25),
+      new Waggon('T2_2', 50),
+      new Waggon('T2_3', 50),
+      new Waggon('T2_4', 67),
+      new Waggon('T2_5', 50),
+      new Waggon('T2_6', 66),
+      new Waggon('T2_7', 50)
     ];
 
-    const waggonsT3 = [];
+    const waggonsT3 = [
+      new Waggon('T3_1', 25),
+      new Waggon('T3_2', 83),
+      new Waggon('T3_3', 36),
+      new Waggon('T3_4', 82)
+    ];
 
     const waggonsT4 = [
-      new Waggon('456', 75),
-      new Waggon('567', 25),
-      new Waggon('678', 33),
-      new Waggon('789', 47),
-      new Waggon('890', 25),
+      new Waggon('T4_1', 25),
+      new Waggon('T4_2', 83),
+      new Waggon('T4_3', 114),
+      new Waggon('T4_4', 50),
+      new Waggon('T4_5', 67),
+      new Waggon('T4_6', 50)
     ];
 
-    const t1 = new Track('T1', 100, 100, 0, waggonsT1, 440, null);
-    const t2 = new Track('T2', 50, 200, 45, waggonsT2, 300, t1);
+    const waggonsT5 = [
+      new Waggon('T5_1', 25),
+      new Waggon('T5_2', 32),
+      new Waggon('T5_3', 94),
+      new Waggon('T5_4', 73),
+      new Waggon('T5_5', 50)
+    ];
+
+    const waggonsT6 = [
+      new Waggon('T6_1', 25),
+      new Waggon('T6_2', 72),
+      new Waggon('T6_3', 156),
+      new Waggon('T6_4', 67)
+    ];
+
+    const waggonsT7 = [
+      new Waggon('T7_1', 25),
+      new Waggon('T7_2', 50),
+      new Waggon('T7_3', 67),
+      new Waggon('T7_4', 104),
+      new Waggon('T7_5', 98),
+      new Waggon('T7_6', 45)
+    ];
+
+    const waggonsT8 = [
+      new Waggon('T8_1', 25),
+      new Waggon('T8_2', 116),
+      new Waggon('T8_3', 50),
+      new Waggon('T8_4', 67),
+      new Waggon('T8_5', 83)
+    ];
+
+    const t1 = new Track('T1', 500, 200, 0, waggonsT1, 341, null, 0);
+    const t2 = new Track('T2', 50, 200, 0, waggonsT2, 590, null, 1);
+    const t3 = new Track('T3', 50, 200, 0, waggonsT3, 300, null, 2);
+    const t4 = new Track('T4', 50, 200, 0, waggonsT4, 800, null, 3);
+    const t5 = new Track('T5', 50, 200, 0, waggonsT5, 650, null, 4);
+    const t6 = new Track('T6', 50, 200, 0, waggonsT6, 612, null, 5);
+    const t7 = new Track('T7', 50, 200, 0, waggonsT7, 480, null, 6);
+    const t8 = new Track('T8', 50, 200, 0, waggonsT8, 720, null, 7);
 
     this.tracks = [
-      t1, t2
+      t1, t2, t3, t4, t5, t6, t7, t8
     ];
 
     /*
@@ -81,17 +138,17 @@ export class DragItPleaseComponent implements OnInit {
 
   public dragOver(event: DragEvent){
     // console.log('drag over...');
-    if(this.actuallyDragged){
+    if (this.actuallyDragged){
       event.preventDefault();
     }
   }
 
-  public dropWaggonToWaggon(event: DragEvent, targetWaggon : Waggon) {
+  public dropWaggonToWaggon(event: DragEvent, targetWaggon: Waggon) {
 
-    console.log('dropped waggon ' + this.actuallyDragged.waggonNumber + ' to waggon ' + targetWaggon.waggonNumber + ' [target track=' + targetWaggon.track.trackNumber + '].');
+    console.log('dropped waggon ' + this.actuallyDragged.waggonNumber + ' to waggon '
+      + targetWaggon.waggonNumber + ' [target track=' + targetWaggon.track.trackNumber + '].');
 
     const droppedWaggon = this.actuallyDragged;
-
     // remove waggon from source track...
     targetWaggon.track.removeWaggon(droppedWaggon);
     // add waggon to target track...
@@ -103,7 +160,7 @@ export class DragItPleaseComponent implements OnInit {
     this.debugTrackWaggons();
   }
 
-  public dropWaggonToTrack(event: DragEvent, targetTrack : Track) {
+  public dropWaggonToTrack(event: DragEvent, targetTrack: Track) {
     console.log('dropped waggon ' + this.actuallyDragged.waggonNumber + ' to track ' + targetTrack.trackNumber + '.');
 
     const droppedWaggon = this.actuallyDragged;
@@ -125,7 +182,8 @@ export class DragItPleaseComponent implements OnInit {
   }
 
   waggonClicked(aWaggon: Waggon) {
-    console.log('waggon clicked: ' + aWaggon.waggonNumber);
+    aWaggon.toggleSelection();
+    console.log('waggon clicked: ' + aWaggon.waggonNumber + ' [selected:' + aWaggon.selected + ']');
   }
 
   trackClicked(aTrack: Track) {
@@ -198,29 +256,70 @@ export class DragItPleaseComponent implements OnInit {
 
   generateTrackToolTip(aTrack: Track) {
     let toolTip = '';
-    toolTip += 'Gleis-Nr.:' + aTrack.trackNumber;
+    toolTip += 'Gleis-Nr.: ' + aTrack.trackNumber;
+    toolTip += '\n';
+    toolTip += 'Länge (gesamt): ' + aTrack.lenght;
+    toolTip += '\n';
+    toolTip += 'Länge (frei): ' + aTrack.calculateUsableLenght();
     return toolTip;
   }
 
   generateWaggonToolTip(aWaggon: Waggon) {
     let toolTip = '';
-    toolTip += 'Waggen-Nr.:' + aWaggon.waggonNumber;
+    toolTip += 'Waggen-Nr.: ' + aWaggon.waggonNumber;
     toolTip += '\n';
-    toolTip += 'Länge:' + aWaggon.renderingLength;
+    toolTip += 'Länge: ' + aWaggon.renderingLength;
     return toolTip;
   }
 
   calculateTrackOriginX(aTrack: Track) {
+
+    return 10;
+
+    // ---
+
+    /*
+    const result = this.trackPositioner.calculateX(aTrack);
+    console.log('calulated x for track ' + aTrack.trackNumber + ' : ' + result);
+    return result;
+    */
+
+    // ---
+
+    /*
     if (aTrack.parent == null) {
       return aTrack.xFrom;
     }
-    return 100;
+    return new Point(aTrack.parent.xFrom, aTrack.parent.yFrom)
+      .calculateFollowingPoint(aTrack.parent.rotation, aTrack.parent.lenght).x;
+      */
   }
 
   calculateTrackOriginY(aTrack: Track) {
+
+    return 10 + (aTrack.index * 20);
+
+    /*
+    const result = this.trackPositioner.calculateY(aTrack);
+    console.log('calulated y for track ' + aTrack.trackNumber + ' : ' + result);
+    return result;
+    */
+
+    // ---
+
+    /*
     if (aTrack.parent == null) {
       return aTrack.yFrom;
     }
-    return 100;
+    return new Point(aTrack.parent.xFrom, aTrack.parent.yFrom)
+      .calculateFollowingPoint(aTrack.parent.rotation, aTrack.parent.lenght).y;
+      */
+  }
+
+  getWaggonRenderingColor(aWaggon: Waggon) {
+    if (aWaggon.selected) {
+      return 'red';
+    }
+    return 'white';
   }
 }

@@ -14,8 +14,14 @@ export class Waggon {
 
   public track: Track;
 
+  public selected: boolean = false;
+
   constructor(aWaggonNumber: string, aRenderingLength: number) {
     this.waggonNumber = aWaggonNumber;
     this.renderingLength = aRenderingLength;
+  }
+
+  toggleSelection() {
+    this.selected = !this.selected;
   }
 }

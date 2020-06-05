@@ -16,7 +16,9 @@ export class Track {
 
   parent: Track;
 
-  constructor(aTrackNumber: string, axFrom: number, ayFrom: number, aRotation: number, aWaggons: Waggon[], aLenght: number, aParent: Track) {
+  index: number;
+
+  constructor(aTrackNumber: string, axFrom: number, ayFrom: number, aRotation: number, aWaggons: Waggon[], aLenght: number, aParent: Track, aIndex: number) {
     this.trackNumber = aTrackNumber;
     this.xFrom = axFrom;
     this.yFrom = ayFrom;
@@ -33,10 +35,15 @@ export class Track {
       }
     }
     this.parent = aParent;
+    this.index = aIndex;
   }
 
   removeWaggon(waggonToRemove: Waggon) {
     const index = waggonToRemove.track.waggons.indexOf(waggonToRemove);
     waggonToRemove.track.waggons.splice(index, 1);
+  }
+
+  calculateUsableLenght() {
+    return 357;
   }
 }
