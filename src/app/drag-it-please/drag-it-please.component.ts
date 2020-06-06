@@ -41,11 +41,7 @@ export class DragItPleaseComponent implements OnInit {
 
     this.droppedItemsHash = new Map<string, Item[]>();
 
-    this.shuntingOrders = [
-      new ShuntingOrder(),
-      new ShuntingOrder(),
-      new ShuntingOrder()
-    ];
+    this.shuntingOrders = [];
 
     const waggonsT1 = [
       new Waggon('T1_1', 25),
@@ -159,9 +155,15 @@ export class DragItPleaseComponent implements OnInit {
     console.log('dropped waggon ' + this.actuallyDragged.waggonNumber + ' to waggon '
       + targetWaggon.waggonNumber + ' [target track=' + targetWaggon.track.trackNumber + '].');
 
-    this.moveWaggonToWaggon(this.actuallyDragged, targetWaggon);
+    const waggonSelection = this.selectedWaggons;
 
-    this.createShuntingOrder();
+    /*
+    for (const w of this.selectedWaggons) {
+      this.moveWaggonToWaggon(w, targetWaggon);
+    }
+    */
+
+    this.createShuntingOrder(waggonSelection, targetWaggon, null);
 
     this.actuallyDragged = undefined;
     this.debugTrackWaggons();
@@ -171,9 +173,15 @@ export class DragItPleaseComponent implements OnInit {
 
     console.log('dropped waggon ' + this.actuallyDragged.waggonNumber + ' to track ' + targetTrack.trackNumber + '.');
 
-    this.moveWaggonToTrack(this.actuallyDragged, targetTrack);
+    const waggonSelection = this.selectedWaggons;
 
-    this.createShuntingOrder();
+    /*
+    for (const w of this.selectedWaggons) {
+      this.moveWaggonToTrack(w, targetTrack);
+    }
+    */
+
+    this.createShuntingOrder(waggonSelection, null, targetTrack);
 
     this.actuallyDragged = undefined;
 
@@ -337,8 +345,10 @@ export class DragItPleaseComponent implements OnInit {
     return 'white';
   }
 
-  private createShuntingOrder() {
-    // this.shuntingOrders.push(new ShuntingOrder());
+  private createShuntingOrder(aWaggons: Waggon[], aTargetWaggon: Waggon, aTargetTrack: Track) {
+
+    console.log('creating shunting order...');
+    this.shuntingOrders.push(new ShuntingOrder(aWaggons, aTargetWaggon, aTargetTrack));
   }
 
   // ---
@@ -351,6 +361,9 @@ export class DragItPleaseComponent implements OnInit {
     // add waggon to target track...
     targetWaggon.track.waggons.splice((targetWaggon.track.waggons.indexOf(targetWaggon) + 1), 0, droppedWaggon);
     droppedWaggon.track = targetWaggon.track;
+
+    this.selectedWaggons = [];
+    this.deselectWaggons();
   }
 
   moveWaggonToTrack(sourceWaggon: Waggon, targetTrack: Track) {
@@ -361,5 +374,36 @@ export class DragItPleaseComponent implements OnInit {
     // add waggon to target track...
     targetTrack.waggons.push(this.actuallyDragged);
     droppedWaggon.track = targetTrack;
+
+    this.selectedWaggons = [];
+    this.deselectWaggons();
+  }
+
+  private deselectWaggons() {
+
+    for (const track of this.tracks) {
+      for (const waggon of track.waggons) {
+        waggon.selected = false;
+      }
+    }
+  }
+
+  pullWaggons(sh: ShuntingOrder) {
+
+    console.log('pull sh...');
+
+    if (sh.targetTrack != null) {
+      for (const w of this.selectedWaggons) {
+        this.moveWaggonToTrack(w, sh.targetTrack);
+      }
+    } else {
+      for (const w of this.selectedWaggons) {
+        this.moveWaggonToWaggon(w, sh.targetWaggon);
+      }
+    }
+  }
+
+  pushWaggons(sh: ShuntingOrder) {
+    console.log('push sh...');
   }
 }

@@ -1,0 +1,15 @@
+<div class="tv-track-item" *ngFor="let track of tracks" (click)="valueClicked(track)" id="{{generateTagId(track)}}"
+     [style.left]="calculateTrackLeft(track)+'px'"
+     [style.top]="calculateTrackTop(track)+'px'"
+     [style.height]="28+'px'"
+     [style.width]="track.length+'px'"
+     [style.transform]="'rotate('+(calcaluateRotation(track))+'deg)'"
+     title="{{generateTrackToolTip(track)}}">
+  <div class="tv-waggon-item" *ngFor="let waggon of track.waggons"
+       [style.left]="calculateWaggonOffsetOnTrack(waggon)+'px'"
+       [style.top]="3+'px'"
+       [style.width]="waggon.length+'px'"
+       title="{{generateWaggonToolTip(waggon)}}">
+    {{waggon.waggonNumber}}
+  </div>
+</div>

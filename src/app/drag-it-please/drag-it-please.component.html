@@ -1,4 +1,4 @@
-<div class>
+<div class="shuntingview">
   <!-- occupied tracks -->
   <div *ngFor="let track of getOccupiedTracks()" class="track-item" (click)="trackClicked(track)"
        title="{{generateTrackToolTip(track)}}"
@@ -37,4 +37,14 @@
        [style.transform]="'rotate('+(track.rotation)+'deg)'"
        (dragover)="dragOver($event)" (drop)="dropWaggonToTrack($event, track)">
   </div>
+</div>
+
+<div *ngFor="let sh of shuntingOrders">
+  {{sh.generateInfo()}}
+  <!--
+  <a (click)="pullWaggons(sh)">Abziehen</a>
+  <a (click)="pushWaggons(sh)">Zustellen</a>
+  -->
+  <button (click)="pullWaggons(sh)">Abziehen</button>
+  <button (click)="pushWaggons(sh)">Zustellen</button>
 </div>
