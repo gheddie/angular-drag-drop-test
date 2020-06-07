@@ -31,7 +31,7 @@ export class TrackViewComponent implements OnInit {
       200, trackRoot, TrackHeading.EAST, waggons);
 
     this.tracks = [
-      trackRoot
+      trackRoot, trackChild
     ];
   }
 

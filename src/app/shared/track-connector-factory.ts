@@ -21,28 +21,28 @@ export class TrackConnectorFactory {
     switch (childTrack.heading) {
 
       case TrackHeading.NORTH:
-        return new Point(x, y);
+        return new Point(x, y - this.TRACK_HEIGHT / 2);
         break;
       case TrackHeading.EAST:
-        return new Point(x, y + this.TRACK_HEIGHT / 2);
+        return new Point(x, y - this.TRACK_HEIGHT / 2);
         break;
       case TrackHeading.SOUTH:
-        return new Point(x - 25, y - 40);
+        return new Point(x, y - this.TRACK_HEIGHT / 2);
         break;
       case TrackHeading.WEST:
-        return new Point(x, y);
+        return new Point(x, y - this.TRACK_HEIGHT / 2);
         break;
       case TrackHeading.NORTH_EAST:
-        return new Point(x + 10, y + 10);
+        return new Point(x, y - this.TRACK_HEIGHT / 2);
         break;
       case TrackHeading.NORTH_WEST:
-        return new Point(x, y);
+        return new Point(x, y - this.TRACK_HEIGHT / 2);
         break;
       case TrackHeading.SOUTH_EAST:
-        return new Point(x - 10, y + 10);
+        return new Point(x, y - this.TRACK_HEIGHT / 2);
         break;
       case TrackHeading.SOUTH_WEST:
-        return new Point(x, y);
+        return new Point(x, y - this.TRACK_HEIGHT / 2);
         break;
     }
   }

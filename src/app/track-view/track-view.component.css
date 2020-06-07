@@ -5,7 +5,7 @@
   rgba(0,0,0,0) calc(50% - 1px),
   rgba(192,192,192,1) calc(50%),
   rgba(0,0,0,0) calc(50% + 1px));
-  transform-origin: bottom left;
+  transform-origin: center left;
 }
 
 .tv-waggon-item {
