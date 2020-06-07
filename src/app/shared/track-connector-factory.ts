@@ -17,34 +17,7 @@ export class TrackConnectorFactory {
 
     const x = parentEndPoint.x;
     const y = parentEndPoint.y;
-
-    switch (childTrack.heading) {
-
-      case TrackHeading.NORTH:
-        return new Point(x, y - this.TRACK_HEIGHT / 2);
-        break;
-      case TrackHeading.EAST:
-        return new Point(x, y - this.TRACK_HEIGHT / 2);
-        break;
-      case TrackHeading.SOUTH:
-        return new Point(x, y - this.TRACK_HEIGHT / 2);
-        break;
-      case TrackHeading.WEST:
-        return new Point(x, y - this.TRACK_HEIGHT / 2);
-        break;
-      case TrackHeading.NORTH_EAST:
-        return new Point(x, y - this.TRACK_HEIGHT / 2);
-        break;
-      case TrackHeading.NORTH_WEST:
-        return new Point(x, y - this.TRACK_HEIGHT / 2);
-        break;
-      case TrackHeading.SOUTH_EAST:
-        return new Point(x, y - this.TRACK_HEIGHT / 2);
-        break;
-      case TrackHeading.SOUTH_WEST:
-        return new Point(x, y - this.TRACK_HEIGHT / 2);
-        break;
-    }
+    return new Point(x, y - this.TRACK_HEIGHT / 2);
   }
 
   static calculateEndPoint(parentTrack: TrackViewTrack): Point {
