@@ -2,6 +2,7 @@ import {TrackHeading} from './track-heading.enum';
 import {TrackViewWaggon} from './track-view-waggon';
 import {Point} from './point';
 import {TrackConnectorFactory} from './track-connector-factory';
+import {Waggon} from './waggon';
 
 export class TrackViewTrack {
 
@@ -32,8 +33,10 @@ export class TrackViewTrack {
     this.parentTrack = aParentTrack;
     this.heading = aHeading;
     this.waggons = aWaggons;
-    for (const waggon of this.waggons) {
-      waggon.track = this;
+    if (this.waggons != null) {
+      for (const waggon of this.waggons) {
+        waggon.track = this;
+      }
     }
   }
 
@@ -45,5 +48,10 @@ export class TrackViewTrack {
 
   generateTagId(): string {
     return 'TR_' + this.trackNumber;
+  }
+
+  removeWaggon(waggonToRemove: TrackViewWaggon) {
+    const index = waggonToRemove.track.waggons.indexOf(waggonToRemove);
+    waggonToRemove.track.waggons.splice(index, 1);
   }
 }

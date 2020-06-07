@@ -1,7 +1,8 @@
-<div class="tv-track-item" *ngFor="let track of tracks" (click)="trackClicked(track)" id="{{track.generateTagId()}}"
+<div class="tv-track-item" *ngFor="let track of tracks"
+     id="{{track.generateTagId()}}"
      [style.left]="calculateTrackLeft(track)+'px'"
      [style.top]="calculateTrackTop(track)+'px'"
-     [style.height]="getTrackHeight()+'px'"
+     [style.height]="getTrackHeight(track)+'px'"
      [style.width]="track.length+'px'"
      [style.border]="getTrackBorder(track)"
      [style.transform]="'rotate('+(calcaluateRotation(track))+'deg)'"
@@ -9,10 +10,17 @@
 
   <div class="tv-waggon-item" *ngFor="let waggon of track.waggons"
        [style.left]="calculateWaggonOffsetOnTrack(waggon)+'px'"
+       (click)="waggonClicked(waggon)"
        [style.top]="3+'px'"
        [style.height]="20+'px'"
        [style.width]="waggon.length+'px'"
-       title="{{generateWaggonToolTip(waggon)}}">
+       [style.background]="getWaggonColor(waggon)"
+       title="{{generateWaggonToolTip(waggon)}}"
+       draggable="true"
+       (dragover)="dragOver($event)"
+       (dragstart)="dragStart($event, waggon)"
+       (dragend)="dragEnd($event, waggon)"
+       (drop)="dropWaggonToWaggon($event, waggon)">
   </div>
 </div>
 
@@ -26,5 +34,7 @@
 </div>
 -->
 
+<!--
 <button (click)="appendTrack()">Neu</button>
 <button (click)="rotateSelectedTrack()">Rotieren</button>
+-->

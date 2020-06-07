@@ -13,7 +13,7 @@ export class TrackConnectorFactory {
   static calculateAnchorPoint(parentTrack: TrackViewTrack, childTrack: TrackViewTrack): Point {
 
     const parentEndPoint = this.calculateEndPoint(parentTrack);
-    console.log('calculating end point for parent track [' + parentTrack.trackNumber + ']: [x:' + parentEndPoint.x + '|y:' + parentEndPoint.y + ']');
+    // console.log('calculating end point for parent track [' + parentTrack.trackNumber + ']: [x:' + parentEndPoint.x + '|y:' + parentEndPoint.y + ']');
 
     const x = parentEndPoint.x;
     const y = parentEndPoint.y;

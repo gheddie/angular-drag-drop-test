@@ -5,16 +5,17 @@
   rgba(192,192,192,1) calc(50%),
   rgba(0,0,0,0) calc(50% + 1px));
   transform-origin: center left;
+  z-index: 0;
 }
 
 .tv-waggon-item {
   position: absolute;
   border-radius: 0%;
-  background-color: white;
   border: 1px solid black;
   border-radius: 0%;
   text-align: center;
   transform: rotate(0deg);
+  z-index: 1;
 }
 
 .endpoint {
