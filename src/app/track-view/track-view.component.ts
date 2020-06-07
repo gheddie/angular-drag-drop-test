@@ -14,7 +14,9 @@ export class TrackViewComponent implements OnInit {
 
   tracks: TrackViewTrack[] = [];
 
-  constructor() { }
+  private selectedTrack: TrackViewTrack;
+
+  constructor() {}
 
   ngOnInit(): void {
 
@@ -28,7 +30,7 @@ export class TrackViewComponent implements OnInit {
       150, null, TrackHeading.EAST, waggons);
 
     const trackChild = new TrackViewTrack(null, null, 'trackChild',
-      380, trackRoot, TrackHeading.EAST, waggons);
+      180, trackRoot, TrackHeading.EAST, waggons);
 
     this.tracks = [
       trackRoot, trackChild
@@ -49,27 +51,14 @@ export class TrackViewComponent implements OnInit {
     return track.y;
   }
 
-  valueClicked(track: TrackViewTrack) {
-
-    console.log('value clicked: ' + track);
-    const element = document.getElementById(track.generateTagId());
-
-    track.heading = TrackConnectorFactory.rotateHeading(track.heading);
-
-    console.log('found element: ' + element);
-
-    // values
-    console.log('height: ' + (element as HTMLDivElement).offsetHeight);
-    console.log('width: ' + (element as HTMLDivElement).offsetWidth);
-    console.log('top: ' + (element as HTMLDivElement).offsetTop);
-    console.log('left: ' + (element as HTMLDivElement).offsetLeft);
-
-    const bounds: DOMRect = (element as HTMLDivElement).getBoundingClientRect();
-
-    console.log('top: ' + bounds.top);
-    console.log('left: ' + bounds.left);
-    console.log('bottom: ' + bounds.bottom);
-    console.log('right: ' + bounds.right);
+  trackClicked(track: TrackViewTrack) {
+    console.log('trackClicked');
+    // track.heading = TrackConnectorFactory.rotateHeading(track.heading);
+    for (const aTrack of this.tracks) {
+      aTrack.selected = false;
+    }
+    track.selected = true;
+    this.selectedTrack = track;
   }
 
   calcaluateRotation(track: TrackViewTrack) {
@@ -164,5 +153,28 @@ export class TrackViewComponent implements OnInit {
 
   getEndpointHeight() {
     return TrackConnectorFactory.ENDPOINT_DIMENSION;
+  }
+
+  keyPressed($event: KeyboardEvent) {
+    console.log('key pressed: ');
+  }
+
+  getTrackBorder(track: TrackViewTrack): string {
+    if (track.selected) {
+      return '1px solid black';
+    } else {
+      return '0px solid black';
+    }
+  }
+
+  appendTrack() {
+    console.log('appendTrack');
+  }
+
+  rotateSelectedTrack() {
+
+    if (this.selectedTrack != null) {
+      this.selectedTrack.heading = TrackConnectorFactory.rotateHeading(this.selectedTrack.heading);
+    }
   }
 }

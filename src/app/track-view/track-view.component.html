@@ -1,8 +1,9 @@
-<div class="tv-track-item" *ngFor="let track of tracks" (click)="valueClicked(track)" id="{{track.generateTagId()}}"
+<div class="tv-track-item" *ngFor="let track of tracks" (click)="trackClicked(track)" id="{{track.generateTagId()}}"
      [style.left]="calculateTrackLeft(track)+'px'"
      [style.top]="calculateTrackTop(track)+'px'"
      [style.height]="getTrackHeight()+'px'"
      [style.width]="track.length+'px'"
+     [style.border]="getTrackBorder(track)"
      [style.transform]="'rotate('+(calcaluateRotation(track))+'deg)'"
      title="{{generateTrackToolTip(track)}}">
 
@@ -24,3 +25,6 @@
      title="endpoint">
 </div>
 -->
+
+<button (click)="appendTrack()">Neu</button>
+<button (click)="rotateSelectedTrack()">Rotieren</button>

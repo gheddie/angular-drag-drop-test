@@ -18,6 +18,8 @@ export class Track {
 
   index: number;
 
+  selected: boolean = false;
+
   constructor(aTrackNumber: string, axFrom: number, ayFrom: number, aRotation: number, aWaggons: Waggon[], aLenght: number, aParent: Track, aIndex: number) {
     this.trackNumber = aTrackNumber;
     this.xFrom = axFrom;

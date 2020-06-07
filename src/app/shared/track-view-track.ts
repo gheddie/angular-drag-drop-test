@@ -21,6 +21,8 @@ export class TrackViewTrack {
 
   public waggons: TrackViewWaggon[];
 
+  selected: boolean = false;
+
   constructor(aX: number, aY: number, aTrackNumber: string, aLength: number, aParentTrack: TrackViewTrack, aHeading: TrackHeading, aWaggons: TrackViewWaggon[]) {
 
     this.x = aX;
@@ -37,7 +39,7 @@ export class TrackViewTrack {
 
   calculateAnchorPoint(parentTrack: TrackViewTrack): Point {
     const parentTrackIdentifier = parentTrack.generateTagId();
-    console.log('calculating anchor point for parent track: ' + parentTrackIdentifier);
+    // console.log('calculating anchor point for parent track: ' + parentTrackIdentifier);
     return TrackConnectorFactory.calculateAnchorPoint(parentTrack, this);
   }
 
