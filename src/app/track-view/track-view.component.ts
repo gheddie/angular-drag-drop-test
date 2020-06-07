@@ -20,15 +20,15 @@ export class TrackViewComponent implements OnInit {
 
     const waggons = [
       new TrackViewWaggon('W_1', 50),
-      new TrackViewWaggon('W_1', 25),
-      new TrackViewWaggon('W_1', 25)
+      new TrackViewWaggon('W_2', 25),
+      new TrackViewWaggon('W_3', 25)
     ];
 
     const trackRoot = new TrackViewTrack(400, 300, 'trackRoot',
-      300, null, TrackHeading.EAST, waggons);
+      150, null, TrackHeading.EAST, waggons);
 
     const trackChild = new TrackViewTrack(null, null, 'trackChild',
-      200, trackRoot, TrackHeading.EAST, waggons);
+      380, trackRoot, TrackHeading.EAST, waggons);
 
     this.tracks = [
       trackRoot, trackChild
