@@ -7,6 +7,7 @@ import { YardViewComponent } from './yard-view/yard-view.component';
 import { DragItPleaseComponent } from './drag-it-please/drag-it-please.component';
 import {TrackPositioner} from './shared/track-positioner';
 import { TrackViewComponent } from './track-view/track-view.component';
+import {TrackConnectorFactory} from './shared/track-connector-factory';
 
 @NgModule({
   declarations: [

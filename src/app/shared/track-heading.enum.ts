@@ -1,12 +1,12 @@
 export enum TrackHeading {
 
-  NORTH,
-  EAST,
-  SOUTH,
-  WEST,
+  NORTH = 'NORTH',
+  EAST = 'EAST',
+  SOUTH = 'SOUTH',
+  WEST = 'WEST',
 
-  NORTH_EAST,
-  NORTH_WEST,
-  SOUTH_EAST,
-  SOUTH_WEST,
+  NORTH_EAST = 'NORTH_EAST',
+  NORTH_WEST = 'NORTH_WEST',
+  SOUTH_EAST = 'SOUTH_EAST',
+  SOUTH_WEST = 'SOUTH_WEST'
 }
