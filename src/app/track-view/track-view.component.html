@@ -8,7 +8,9 @@
        [style.width]="track.length+'px'"
        [style.border]="getTrackBorder(track)"
        [style.transform]="'rotate('+(calcaluateRotation(track))+'deg)'"
-       title="{{generateTrackToolTip(track)}}">
+       title="{{generateTrackToolTip(track)}}"
+       (dragover)="dragOver($event)"
+       (drop)="dropWaggonToTrack($event, track)">
 
     <div class="tv-waggon-item" *ngFor="let waggon of track.waggons"
          [style.left]="calculateWaggonOffsetOnTrack(waggon)+'px'"

@@ -5,6 +5,7 @@ import {TrackViewWaggon} from '../shared/track-view-waggon';
 import {TrackConnectorFactory} from '../shared/track-connector-factory';
 import {Point} from '../shared/point';
 import {Waggon} from '../shared/waggon';
+import {Track} from '../shared/track';
 
 @Component({
   selector: 'app-track-view',
@@ -24,6 +25,8 @@ export class TrackViewComponent implements OnInit {
   private scrollLeft: number = 0;
 
   private scrollTop: number = 0;
+
+  private blockWaggonEvent: boolean = false;
 
   constructor() {}
 
@@ -331,7 +334,33 @@ export class TrackViewComponent implements OnInit {
     }
   }
 
+  dropWaggonToTrack($event: DragEvent, targetTrack: TrackViewTrack) {
+
+    if (this.blockWaggonEvent) {
+      this.blockWaggonEvent = false;
+      console.log('this.blockWaggonEvent = false;');
+      console.log('dropWaggonToTrack false --> returning');
+      return;
+    }
+
+    console.log('dropped waggon ' + this.actuallyDragged.waggonNumber + ' to track ' + targetTrack.trackNumber + '.');
+    const waggonSelection = this.selectedWaggons;
+
+    for (const w of this.selectedWaggons) {
+      this.moveWaggonToTrack(w, targetTrack);
+    }
+
+    this.actuallyDragged = undefined;
+  }
+
   public dropWaggonToWaggon(event: DragEvent, targetWaggon: TrackViewWaggon) {
+
+    /**
+     * until we know to consume the event, so dropping
+     * a waggon does not also trigger dropping to track...
+     */
+    this.blockWaggonEvent = true;
+    console.log('this.blockWaggonEvent = true;');
 
     console.log('dropped waggon ' + this.actuallyDragged.waggonNumber + ' to waggon '
       + targetWaggon.waggonNumber + ' [target track=' + targetWaggon.track.trackNumber + '].');
@@ -339,8 +368,12 @@ export class TrackViewComponent implements OnInit {
     for (const w of this.selectedWaggons) {
       this.moveWaggonToWaggon(w, targetWaggon);
     }
-
     this.actuallyDragged = undefined;
+
+    /*
+    this.blockWaggonEvent = false;
+    console.log('this.blockWaggonEvent = false;');
+    */
   }
 
   getWaggonColor(waggon: TrackViewWaggon) {
@@ -348,6 +381,22 @@ export class TrackViewComponent implements OnInit {
       return 'red';
     }
     return 'white';
+  }
+
+  moveWaggonToTrack(sourceWaggon: TrackViewWaggon, targetTrack: TrackViewTrack) {
+
+    const droppedWaggon = sourceWaggon;
+    // remove waggon from source track...
+    droppedWaggon.track.removeWaggon(droppedWaggon);
+    // add waggon to target track...
+    if (targetTrack.waggons == null) {
+      targetTrack.waggons = [];
+    }
+    targetTrack.waggons.push(droppedWaggon);
+    droppedWaggon.track = targetTrack;
+
+    this.selectedWaggons = [];
+    this.deselectWaggons();
   }
 
   moveWaggonToWaggon(sourceWaggon: TrackViewWaggon, targetWaggon: TrackViewWaggon) {
