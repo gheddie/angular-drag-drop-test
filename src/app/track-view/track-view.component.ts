@@ -71,9 +71,15 @@ export class TrackViewComponent implements OnInit {
       new TrackViewWaggon('T9_2', 25)
     ];
 
+    const waggonsT10 = [
+      new TrackViewWaggon('T10_1', 50),
+      new TrackViewWaggon('T10_2', 25),
+      new TrackViewWaggon('T10_3', 25)
+    ];
+
     // ---------------------------------------------------------------------------------------------
 
-    const t1 = new TrackViewTrack(100, 150, 'T1',
+    const t1 = new TrackViewTrack(400, 150, 'T1',
       350, null, TrackHeading.EAST, waggonsT1);
 
     const t2 = new TrackViewTrack(null, null, 'T2',
@@ -93,6 +99,18 @@ export class TrackViewComponent implements OnInit {
 
     const t7 = new TrackViewTrack(null, null, 'T7',
       500, t4, TrackHeading.WEST, waggonsT7);
+
+    const t8 = new TrackViewTrack(null, null, 'T8',
+      580, t7, TrackHeading.SOUTH_EAST, null);
+
+    const t9 = new TrackViewTrack(null, null, 'T9',
+      200, t8, TrackHeading.NORTH_EAST, waggonsT9);
+
+    const t10 = new TrackViewTrack(null, null, 'T10',
+      200, t8, TrackHeading.SOUTH_EAST, waggonsT10);
+
+    const t11 = new TrackViewTrack(null, null, 'T11',
+      200, t8, TrackHeading.EAST, null);
 
     // ---------------------------------------------------------------------------------------------
 
@@ -134,7 +152,7 @@ export class TrackViewComponent implements OnInit {
     // ---------------------------------------------------------------------------------------------
 
     this.tracks = [
-      t1, t2, t3, t4, t5, t6, t7
+      t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11
     ];
 
     /*
