@@ -21,9 +21,9 @@ export class TrackViewComponent implements OnInit {
 
   public selectedWaggons: TrackViewWaggon[] = [];
 
-  private scrollLeft: number;
+  private scrollLeft: number = 0;
 
-  private scrollTop: number;
+  private scrollTop: number = 0;
 
   constructor() {}
 
@@ -51,9 +51,16 @@ export class TrackViewComponent implements OnInit {
       new TrackViewWaggon('T3_8', 25),
     ];
 
-    const waggonsT7 = [
+    const waggonsT6 = [
       new TrackViewWaggon('T6_1', 50),
       new TrackViewWaggon('T6_2', 25)
+    ];
+
+    const waggonsT7 = [
+      new TrackViewWaggon('T7_1', 50),
+      new TrackViewWaggon('T7_2', 25),
+      new TrackViewWaggon('T7_3', 50),
+      new TrackViewWaggon('T7_4', 25)
     ];
 
     const waggonsT9 = [
@@ -61,6 +68,32 @@ export class TrackViewComponent implements OnInit {
       new TrackViewWaggon('T9_2', 25)
     ];
 
+    // ---------------------------------------------------------------------------------------------
+
+    const t1 = new TrackViewTrack(100, 150, 'T1',
+      350, null, TrackHeading.EAST, waggonsT1);
+
+    const t2 = new TrackViewTrack(null, null, 'T2',
+      180, t1, TrackHeading.NORTH_EAST, waggonsT2);
+
+    const t3 = new TrackViewTrack(null, null, 'T3',
+      580, t1, TrackHeading.EAST, waggonsT3);
+
+    const t4 = new TrackViewTrack(null, null, 'T4',
+      300, t1, TrackHeading.SOUTH_EAST, null);
+
+    const t5 = new TrackViewTrack(null, null, 'T5',
+      300, t4, TrackHeading.NORTH_EAST, null);
+
+    const t6 = new TrackViewTrack(null, null, 'T6',
+      400, t4, TrackHeading.EAST, waggonsT6);
+
+    const t7 = new TrackViewTrack(null, null, 'T7',
+      500, t4, TrackHeading.WEST, waggonsT7);
+
+    // ---------------------------------------------------------------------------------------------
+
+    /*
     const t1 = new TrackViewTrack(100, 100, 'T1',
       150, null, TrackHeading.EAST, waggonsT1);
 
@@ -88,21 +121,36 @@ export class TrackViewComponent implements OnInit {
     const t9 = new TrackViewTrack(null, null, 'T9',
       880, t4, TrackHeading.SOUTH_EAST, waggonsT9);
 
+    const t10 = new TrackViewTrack(null, null, 'T10',
+      3000, t9, TrackHeading.EAST, null);
+
+    const t11 = new TrackViewTrack(null, null, 'T11',
+      500, t9, TrackHeading.NORTH_WEST, null);
+      */
+
+    // ---------------------------------------------------------------------------------------------
+
     this.tracks = [
-      t1, t2, t3, t4, t5, t6, t7, t8, t9
+      t1, t2, t3, t4, t5, t6, t7
     ];
+
+    /*
+    this.tracks = [
+      t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11
+    ];
+    */
   }
 
   calculateTrackLeft(track: TrackViewTrack) {
     if (track.parentTrack != null) {
-      return track.calculateAnchorPoint(track.parentTrack).x;
+      return track.calculateAnchorPoint(track.parentTrack, this.scrollLeft, this.scrollTop).x;
     }
     return track.x;
   }
 
   calculateTrackTop(track: TrackViewTrack) {
     if (track.parentTrack != null) {
-      return track.calculateAnchorPoint(track.parentTrack).y;
+      return track.calculateAnchorPoint(track.parentTrack, this.scrollLeft, this.scrollTop).y;
     }
     return track.y;
   }
@@ -156,7 +204,6 @@ export class TrackViewComponent implements OnInit {
       case TrackHeading.WEST:
         heading = 180;
         break;
-
       case TrackHeading.NORTH_EAST:
         heading = 315;
         break;
@@ -169,7 +216,6 @@ export class TrackViewComponent implements OnInit {
       case TrackHeading.SOUTH_WEST:
         heading = 135;
         break;
-
       default:
         heading = 0;
         break;
@@ -193,20 +239,20 @@ export class TrackViewComponent implements OnInit {
     toolTip += 'Gleis-Nr.: ' + track.trackNumber;
     toolTip += '\n';
     toolTip += 'Länge (gesamt): ' + track.length;
-    /*
     toolTip += '\n';
     toolTip += 'Ausrichtung: ' + track.heading;
     if (track.parentTrack != null) {
       toolTip += '\n';
+      toolTip += 'Root: ' + track.parentTrack.trackNumber;
+      toolTip += '\n';
       toolTip += 'Ausrichtung (Root): ' + track.parentTrack.heading;
     }
-    */
     return toolTip;
   }
 
   calculateWaggonOffsetOnTrack(waggon: TrackViewWaggon) {
 
-    let result = 15;
+    let result = 30;
     // console.log('calculate waggon offset for waggon ' + waggon.waggonNumber + ' on track: ' + waggon.track.trackNumber);
     const index = waggon.track.waggons.indexOf(waggon);
     for (let i = 0; i < index; i++) {
@@ -225,12 +271,12 @@ export class TrackViewComponent implements OnInit {
   }
 
   calculateTrackEndpointX(track: TrackViewTrack): number {
-    const topLeftEndpoint: Point = TrackConnectorFactory.calculateEndPoint(track);
+    const topLeftEndpoint: Point = TrackConnectorFactory.calculateEndPoint(track, this.scrollLeft, this.scrollTop);
     return  topLeftEndpoint.x - (TrackConnectorFactory.ENDPOINT_DIMENSION / 2);
   }
 
   calculateTrackEndpointY(track: TrackViewTrack): number {
-    const topLeftEndpoint: Point = TrackConnectorFactory.calculateEndPoint(track);
+    const topLeftEndpoint: Point = TrackConnectorFactory.calculateEndPoint(track, this.scrollLeft, this.scrollTop);
     return  topLeftEndpoint.y - (TrackConnectorFactory.ENDPOINT_DIMENSION / 2);
   }
 
@@ -333,8 +379,5 @@ export class TrackViewComponent implements OnInit {
     const trackView: HTMLDivElement = (event.srcElement as HTMLDivElement);
     this.scrollTop = trackView.scrollTop;
     this.scrollLeft = trackView.scrollLeft;
-    console.log('left:  ' + this.scrollLeft);
-    console.log('top:  ' + this.scrollTop);
-    console.log('------------------------------------------');
   }
 }

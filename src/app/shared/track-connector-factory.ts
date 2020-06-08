@@ -10,47 +10,63 @@ export class TrackConnectorFactory {
 
   // public static OFFSET: number = Math.sqrt(Math.pow(TrackConnectorFactory.TRACK_HEIGHT / 2, 2)  / 2);
 
-  static calculateAnchorPoint(parentTrack: TrackViewTrack, childTrack: TrackViewTrack): Point {
+  static calculateAnchorPoint(parentTrack: TrackViewTrack, childTrack: TrackViewTrack, aScrolledLeft: number, aScrolledTop: number): Point {
 
-    const parentEndPoint = this.calculateEndPoint(parentTrack);
+    const parentEndPoint = this.calculateEndPoint(parentTrack, aScrolledLeft, aScrolledTop);
     // console.log('calculating end point for parent track [' + parentTrack.trackNumber + ']: [x:' + parentEndPoint.x + '|y:' + parentEndPoint.y + ']');
 
     const x = parentEndPoint.x;
     const y = parentEndPoint.y;
+
     return new Point(x, y - this.TRACK_HEIGHT / 2);
   }
 
-  static calculateEndPoint(parentTrack: TrackViewTrack): Point {
+  static calculateEndPoint(parentTrack: TrackViewTrack, aScrolledLeft: number, aScrolledTop: number): Point {
+
+    // console.log('calculateEndPoint [aScrolledLeft:' + aScrolledLeft + '|aScrolledTop:' + aScrolledTop + ']');
 
     const parentRectangle: DOMRect = document.getElementById(parentTrack.generateTagId()).getBoundingClientRect();
+
+    let resultX: number;
+    let resultY: number;
 
     switch (parentTrack.heading) {
 
       case TrackHeading.NORTH:
-        return new Point(parentRectangle.right - (TrackConnectorFactory.TRACK_HEIGHT / 2), parentRectangle.top);
+        resultX = parentRectangle.right - (TrackConnectorFactory.TRACK_HEIGHT / 2);
+        resultY = parentRectangle.top;
         break;
       case TrackHeading.EAST:
-        return new Point(parentRectangle.right, parentRectangle.top + (TrackConnectorFactory.TRACK_HEIGHT / 2));
+        resultX = parentRectangle.right;
+        resultY = parentRectangle.top + (TrackConnectorFactory.TRACK_HEIGHT / 2);
         break;
       case TrackHeading.SOUTH:
-        return new Point(parentRectangle.right - (TrackConnectorFactory.TRACK_HEIGHT / 2), parentRectangle.bottom);
+        resultX = parentRectangle.right - (TrackConnectorFactory.TRACK_HEIGHT / 2);
+        resultY = parentRectangle.bottom;
         break;
       case TrackHeading.WEST:
-        return new Point(parentRectangle.left, parentRectangle.top + (TrackConnectorFactory.TRACK_HEIGHT / 2));
+        resultX = parentRectangle.left;
+        resultY = parentRectangle.top + (TrackConnectorFactory.TRACK_HEIGHT / 2);
         break;
       case TrackHeading.NORTH_EAST:
-        return new Point(parentRectangle.right - this.triangleCatheteLenght() / 2, parentRectangle.top + this.triangleCatheteLenght() / 2);
+        resultX = parentRectangle.right - this.triangleCatheteLenght() / 2;
+        resultY = parentRectangle.top + this.triangleCatheteLenght() / 2;
         break;
       case TrackHeading.NORTH_WEST:
-        return new Point(parentRectangle.left + this.triangleCatheteLenght() / 2, parentRectangle.top + this.triangleCatheteLenght() / 2);
+        resultX = parentRectangle.left + this.triangleCatheteLenght() / 2;
+        resultY = parentRectangle.top + this.triangleCatheteLenght() / 2;
         break;
       case TrackHeading.SOUTH_EAST:
-        return new Point(parentRectangle.right - this.triangleCatheteLenght() / 2, parentRectangle.bottom - this.triangleCatheteLenght() / 2);
+        resultX = parentRectangle.right - this.triangleCatheteLenght() / 2;
+        resultY = parentRectangle.bottom - this.triangleCatheteLenght() / 2;
         break;
       case TrackHeading.SOUTH_WEST:
-        return new Point(parentRectangle.left + this.triangleCatheteLenght() / 2, parentRectangle.bottom - this.triangleCatheteLenght() / 2);
+        resultX = parentRectangle.left + this.triangleCatheteLenght() / 2;
+        resultY = parentRectangle.bottom - this.triangleCatheteLenght() / 2;
         break;
     }
+
+    return new Point(resultX + aScrolledLeft, resultY + aScrolledTop);
   }
 
   static rotateHeading(heading: TrackHeading): TrackHeading {

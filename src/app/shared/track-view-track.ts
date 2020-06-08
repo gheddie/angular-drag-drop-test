@@ -40,10 +40,10 @@ export class TrackViewTrack {
     }
   }
 
-  calculateAnchorPoint(parentTrack: TrackViewTrack): Point {
+  calculateAnchorPoint(parentTrack: TrackViewTrack, aScrolledLeft: number, aScrolledTop: number): Point {
     const parentTrackIdentifier = parentTrack.generateTagId();
     // console.log('calculating anchor point for parent track: ' + parentTrackIdentifier);
-    return TrackConnectorFactory.calculateAnchorPoint(parentTrack, this);
+    return TrackConnectorFactory.calculateAnchorPoint(parentTrack, this, aScrolledLeft, aScrolledTop);
   }
 
   generateTagId(): string {
