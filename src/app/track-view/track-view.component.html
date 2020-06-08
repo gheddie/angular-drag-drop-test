@@ -1,40 +1,42 @@
-<div class="tv-track-item" *ngFor="let track of tracks"
-     id="{{track.generateTagId()}}"
-     [style.left]="calculateTrackLeft(track)+'px'"
-     [style.top]="calculateTrackTop(track)+'px'"
-     [style.height]="getTrackHeight(track)+'px'"
-     [style.width]="track.length+'px'"
-     [style.border]="getTrackBorder(track)"
-     [style.transform]="'rotate('+(calcaluateRotation(track))+'deg)'"
-     title="{{generateTrackToolTip(track)}}">
+<div class="trackview" (scroll)="scrolled($event)">
 
-  <div class="tv-waggon-item" *ngFor="let waggon of track.waggons"
-       [style.left]="calculateWaggonOffsetOnTrack(waggon)+'px'"
-       (click)="waggonClicked(waggon)"
-       [style.top]="3+'px'"
-       [style.height]="20+'px'"
-       [style.width]="waggon.length+'px'"
-       [style.background]="getWaggonColor(waggon)"
-       title="{{generateWaggonToolTip(waggon)}}"
-       draggable="true"
-       (dragover)="dragOver($event)"
-       (dragstart)="dragStart($event, waggon)"
-       (dragend)="dragEnd($event, waggon)"
-       (drop)="dropWaggonToWaggon($event, waggon)">
+ <div class="tv-track-item" *ngFor="let track of tracks" (scroll)="scrolled($event)"
+       id="{{track.generateTagId()}}"
+       [style.left]="calculateTrackLeft(track)+'px'"
+       [style.top]="calculateTrackTop(track)+'px'"
+       [style.height]="getTrackHeight(track)+'px'"
+       [style.width]="track.length+'px'"
+       [style.border]="getTrackBorder(track)"
+       [style.transform]="'rotate('+(calcaluateRotation(track))+'deg)'"
+       title="{{generateTrackToolTip(track)}}">
+
+    <div class="tv-waggon-item" *ngFor="let waggon of track.waggons"
+         [style.left]="calculateWaggonOffsetOnTrack(waggon)+'px'"
+         (click)="waggonClicked(waggon)"
+         [style.top]="3+'px'"
+         [style.height]="20+'px'"
+         [style.width]="waggon.length+'px'"
+         [style.background]="getWaggonColor(waggon)"
+         title="{{generateWaggonToolTip(waggon)}}"
+         draggable="true"
+         (dragover)="dragOver($event)"
+         (dragstart)="dragStart($event, waggon)"
+         (dragend)="dragEnd($event, waggon)"
+         (drop)="dropWaggonToWaggon($event, waggon)">
+    </div>
   </div>
-</div>
 
-<!--
-<div class="endpoint" *ngFor="let track of tracks"
-     [style.left]="calculateTrackEndpointX(track)+'px'"
-     [style.top]="calculateTrackEndpointY(track)+'px'"
-     [style.height]="getEndpointHeight()+'px'"
-     [style.width]="getEndpointHeight()+'px'"
-     title="endpoint">
-</div>
--->
+  <div class="endpoint" *ngFor="let track of tracks"
+       [style.left]="calculateTrackEndpointX(track)+'px'"
+       [style.top]="calculateTrackEndpointY(track)+'px'"
+       [style.height]="getEndpointHeight()+'px'"
+       [style.width]="getEndpointHeight()+'px'"
+       title="endpoint of {{track.trackNumber}}">
+  </div>
 
-<!--
-<button (click)="appendTrack()">Neu</button>
-<button (click)="rotateSelectedTrack()">Rotieren</button>
--->
+  <!--
+  <button (click)="appendTrack()">Neu</button>
+  <button (click)="rotateSelectedTrack()">Rotieren</button>
+  -->
+
+</div>

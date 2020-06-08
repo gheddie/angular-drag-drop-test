@@ -1,3 +1,12 @@
+.trackview {
+  width: 900px;
+  height: 700px;
+  position: relative;
+  background-color: aliceblue;
+  border: 1px solid black;
+  overflow: scroll;
+}
+
 .tv-track-item {
   position: absolute;
   background: linear-gradient(180deg,
