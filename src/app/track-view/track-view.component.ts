@@ -11,9 +11,9 @@ import {Point} from '../shared/point';
 })
 export class TrackViewComponent implements OnInit {
 
-  public static TRACK_HEIGHT: number = 28;
+  public static TRACK_HEIGHT = 28;
 
-  public static ENDPOINT_DIMENSION: number = 13;
+  public static ENDPOINT_DIMENSION = 13;
 
   tracks: TrackViewTrack[] = [];
 
@@ -23,11 +23,13 @@ export class TrackViewComponent implements OnInit {
 
   public selectedWaggons: TrackViewWaggon[] = [];
 
-  private scrollLeft: number = 0;
+  private scrollLeft = 0;
 
-  private scrollTop: number = 0;
+  private scrollTop = 0;
 
-  private blockWaggonEvent: boolean = false;
+  private blockWaggonEvent = false;
+
+  private zoomFactor: number = 1;
 
   constructor() {}
 
@@ -230,17 +232,17 @@ export class TrackViewComponent implements OnInit {
     let result = 30;
     const index = waggon.track.waggons.indexOf(waggon);
     for (let i = 0; i < index; i++) {
-      result += waggon.track.waggons[i].length + 5;
+      result += waggon.track.waggons[i].length * this.zoomFactor + 5 * this.zoomFactor;
     }
     return result;
   }
 
-  getTrackHeight(track: TrackViewTrack): number {
+  calculateTrackHeight(track: TrackViewTrack): number {
     if (track.selected) {
       // for border
-      return TrackViewComponent.TRACK_HEIGHT - 2;
+      return (TrackViewComponent.TRACK_HEIGHT - 2) * this.zoomFactor;
     }
-    return TrackViewComponent.TRACK_HEIGHT;
+    return TrackViewComponent.TRACK_HEIGHT * this.zoomFactor;
   }
 
   calculateTrackEndpointX(track: TrackViewTrack): number {
@@ -263,20 +265,20 @@ export class TrackViewComponent implements OnInit {
     switch (track.heading) {
 
       case TrackHeading.NORTH:
-        resultX = parentRectangle.right - (TrackViewComponent.TRACK_HEIGHT / 2);
+        resultX = parentRectangle.right - (TrackViewComponent.TRACK_HEIGHT * this.zoomFactor / 2);
         resultY = parentRectangle.top;
         break;
       case TrackHeading.EAST:
         resultX = parentRectangle.right;
-        resultY = parentRectangle.top + (TrackViewComponent.TRACK_HEIGHT / 2);
+        resultY = parentRectangle.top + (TrackViewComponent.TRACK_HEIGHT * this.zoomFactor / 2);
         break;
       case TrackHeading.SOUTH:
-        resultX = parentRectangle.right - (TrackViewComponent.TRACK_HEIGHT / 2);
+        resultX = parentRectangle.right - (TrackViewComponent.TRACK_HEIGHT * this.zoomFactor / 2);
         resultY = parentRectangle.bottom;
         break;
       case TrackHeading.WEST:
         resultX = parentRectangle.left;
-        resultY = parentRectangle.top + (TrackViewComponent.TRACK_HEIGHT / 2);
+        resultY = parentRectangle.top + (TrackViewComponent.TRACK_HEIGHT * this.zoomFactor / 2);
         break;
       case TrackHeading.NORTH_EAST:
         resultX = parentRectangle.right - this.triangleCatheteLenght() / 2;
@@ -304,11 +306,11 @@ export class TrackViewComponent implements OnInit {
    * die Hypothenuse die Länge der Gleishöhe ist.
    */
   triangleCatheteLenght(): number {
-    return Math.sqrt(Math.pow(TrackViewComponent.TRACK_HEIGHT, 2)  / 2);
+    return Math.sqrt(Math.pow(TrackViewComponent.TRACK_HEIGHT * this.zoomFactor, 2)  / 2);
   }
 
   getEndpointHeight(): number {
-    return TrackViewComponent.ENDPOINT_DIMENSION;
+    return TrackViewComponent.ENDPOINT_DIMENSION * this.zoomFactor;
   }
 
   keyPressed($event: KeyboardEvent) {
@@ -453,5 +455,33 @@ export class TrackViewComponent implements OnInit {
     }
     */
     return false + '';
+  }
+
+  calculateTrackLength(track: TrackViewTrack): number {
+    return track.length * this.zoomFactor;
+  }
+
+  calculateWaggonLength(waggon: TrackViewWaggon): number {
+    return waggon.length * this.zoomFactor;
+  }
+
+  calculateWaggonHeight(waggon: TrackViewWaggon): number {
+    return 20 * this.zoomFactor;
+  }
+
+  calculateWaggonTop(waggon: TrackViewWaggon): number {
+    return 3 * this.zoomFactor;
+  }
+
+  zoomIn(): void {
+    if (this.zoomFactor < 5) {
+      this.zoomFactor = this.zoomFactor + 0.1;
+    }
+  }
+
+  zoomOut(): void {
+    if (this.zoomFactor > 0.1) {
+      this.zoomFactor = this.zoomFactor - 0.1;
+    }
   }
 }

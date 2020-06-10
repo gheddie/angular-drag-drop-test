@@ -4,8 +4,8 @@
        id="{{track.generateTagId()}}"
        [style.left]="calculateTrackLeft(track)+'px'"
        [style.top]="calculateTrackTop(track)+'px'"
-       [style.height]="getTrackHeight(track)+'px'"
-       [style.width]="track.length+'px'"
+       [style.height]="calculateTrackHeight(track)+'px'"
+       [style.width]="calculateTrackLength(track)+'px'"
        [style.border]="getTrackBorder(track)"
        [style.transform]="'rotate('+(calcaluateRotation(track))+'deg)'"
        title="{{generateTrackToolTip(track)}}"
@@ -15,9 +15,9 @@
     <div class="tv-waggon-item" *ngFor="let waggon of track.waggons"
          [style.left]="calculateWaggonOffsetOnTrack(waggon)+'px'"
          (click)="waggonClicked(waggon)"
-         [style.top]="3+'px'"
-         [style.height]="20+'px'"
-         [style.width]="waggon.length+'px'"
+         [style.top]="calculateWaggonTop(waggon)+'px'"
+         [style.height]="calculateWaggonHeight(waggon)+'px'"
+         [style.width]="calculateWaggonLength(waggon)+'px'"
          [style.background]="getWaggonColor(waggon)"
          title="{{generateWaggonToolTip(waggon)}}"
          draggable="true"
@@ -37,3 +37,7 @@
   </div>
 
 </div>
+
+<button (click)="zoomIn()">Zoom in</button>
+<button (click)="zoomOut()">Zoom out</button>
+{{zoomFactor}}
