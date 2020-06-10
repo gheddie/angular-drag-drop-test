@@ -442,9 +442,9 @@ export class TrackViewComponent implements OnInit {
   }
 
   scrolled($event: Event) {
-    // console.log('scrolled: ' + window.pageXOffset);
     const trackView: HTMLDivElement = (event.srcElement as HTMLDivElement);
     this.scrollTop = trackView.scrollTop;
     this.scrollLeft = trackView.scrollLeft;
+    console.log('scrolled to [top:' + this.scrollTop + '|left:' + this.scrollLeft + ']');
   }
 }
