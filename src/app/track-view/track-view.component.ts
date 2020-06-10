@@ -3,8 +3,6 @@ import {TrackViewTrack} from '../shared/track-view-track';
 import {TrackHeading} from '../shared/track-heading.enum';
 import {TrackViewWaggon} from '../shared/track-view-waggon';
 import {Point} from '../shared/point';
-import {Waggon} from '../shared/waggon';
-import {Track} from '../shared/track';
 
 @Component({
   selector: 'app-track-view',
@@ -167,22 +165,21 @@ export class TrackViewComponent implements OnInit {
 
   calculateTrackLeft(track: TrackViewTrack) {
     if (track.parentTrack != null) {
-      return this.calculateAnchorPoint(track.parentTrack, track, this.scrollLeft, this.scrollTop).x;
+      return this.calculateAnchorPoint(track, this.scrollLeft, this.scrollTop).x;
     }
     return track.x;
   }
 
   calculateTrackTop(track: TrackViewTrack) {
     if (track.parentTrack != null) {
-      return this.calculateAnchorPoint(track.parentTrack, track, this.scrollLeft, this.scrollTop).y;
+      return this.calculateAnchorPoint(track, this.scrollLeft, this.scrollTop).y;
     }
     return track.y;
   }
 
-  calculateAnchorPoint(parentTrack: TrackViewTrack, childTrack: TrackViewTrack, aScrolledLeft: number, aScrolledTop: number): Point {
+  calculateAnchorPoint(aTrack: TrackViewTrack, aScrolledLeft: number, aScrolledTop: number): Point {
 
-    const parentEndPoint = this.calculateEndPoint(parentTrack, aScrolledLeft, aScrolledTop);
-    // console.log('calculating end point for parent track [' + parentTrack.trackNumber + ']: [x:' + parentEndPoint.x + '|y:' + parentEndPoint.y + ']');
+    const parentEndPoint = this.calculateEndPoint(aTrack.parentTrack, aScrolledLeft, aScrolledTop);
 
     const x = parentEndPoint.x;
     const y = parentEndPoint.y;
@@ -307,24 +304,24 @@ export class TrackViewComponent implements OnInit {
 
   calculateTrackEndpointX(track: TrackViewTrack): number {
     const topLeftEndpoint: Point = this.calculateEndPoint(track, this.scrollLeft, this.scrollTop);
-    return  topLeftEndpoint.x - (TrackViewComponent.ENDPOINT_DIMENSION / 2);
+    return topLeftEndpoint.x - (TrackViewComponent.ENDPOINT_DIMENSION / 2);
   }
 
   calculateTrackEndpointY(track: TrackViewTrack): number {
     const topLeftEndpoint: Point = this.calculateEndPoint(track, this.scrollLeft, this.scrollTop);
-    return  topLeftEndpoint.y - (TrackViewComponent.ENDPOINT_DIMENSION / 2);
+    return topLeftEndpoint.y - (TrackViewComponent.ENDPOINT_DIMENSION / 2);
   }
 
-  calculateEndPoint(parentTrack: TrackViewTrack, aScrolledLeft: number, aScrolledTop: number): Point {
+  calculateEndPoint(track: TrackViewTrack, aScrolledLeft: number, aScrolledTop: number): Point {
 
     // console.log('calculateEndPoint [aScrolledLeft:' + aScrolledLeft + '|aScrolledTop:' + aScrolledTop + ']');
 
-    const parentRectangle: DOMRect = document.getElementById(parentTrack.generateTagId()).getBoundingClientRect();
+    const parentRectangle: DOMRect = document.getElementById(track.generateTagId()).getBoundingClientRect();
 
     let resultX: number;
     let resultY: number;
 
-    switch (parentTrack.heading) {
+    switch (track.heading) {
 
       case TrackHeading.NORTH:
         resultX = parentRectangle.right - (TrackViewComponent.TRACK_HEIGHT / 2);
