@@ -347,13 +347,6 @@ export class TrackViewComponent implements OnInit {
     }
   }
 
-  rotateSelectedTrack() {
-
-    if (this.selectedTrack != null) {
-      this.selectedTrack.heading = this.rotateHeading(this.selectedTrack.heading);
-    }
-  }
-
   // --- drag + drop
 
   public dragStart(event: DragEvent, waggon: TrackViewWaggon){
@@ -471,36 +464,5 @@ export class TrackViewComponent implements OnInit {
   waggonDraggable(waggon: TrackViewWaggon) {
     // console.log('checking waggon draggable: ' + waggon.waggonNumber);
     return (waggon.selected);
-  }
-
-  rotateHeading(heading: TrackHeading): TrackHeading {
-
-    switch (heading) {
-
-      case TrackHeading.NORTH:
-        return TrackHeading.NORTH_WEST;
-        break;
-      case TrackHeading.EAST:
-        return TrackHeading.NORTH_EAST;
-        break;
-      case TrackHeading.SOUTH:
-        return TrackHeading.SOUTH_EAST;
-        break;
-      case TrackHeading.WEST:
-        return TrackHeading.SOUTH_WEST;
-        break;
-      case TrackHeading.NORTH_EAST:
-        return TrackHeading.NORTH;
-        break;
-      case TrackHeading.NORTH_WEST:
-        return TrackHeading.WEST;
-        break;
-      case TrackHeading.SOUTH_EAST:
-        return TrackHeading.EAST;
-        break;
-      case TrackHeading.SOUTH_WEST:
-        return TrackHeading.SOUTH;
-        break;
-    }
   }
 }
