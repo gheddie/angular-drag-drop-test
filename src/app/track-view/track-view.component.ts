@@ -116,14 +116,14 @@ export class TrackViewComponent implements OnInit {
     ];
   }
 
-  calculateTrackLeft(track: TrackViewTrack) {
+  calculateTrackLeft(track: TrackViewTrack): number {
     if (track.parentTrack != null) {
       return this.calculateAnchorPoint(track, this.scrollLeft, this.scrollTop).x;
     }
     return track.x;
   }
 
-  calculateTrackTop(track: TrackViewTrack) {
+  calculateTrackTop(track: TrackViewTrack): number {
     if (track.parentTrack != null) {
       return this.calculateAnchorPoint(track, this.scrollLeft, this.scrollTop).y;
     }
@@ -171,7 +171,7 @@ export class TrackViewComponent implements OnInit {
     }
   }
 
-  calcaluateRotation(track: TrackViewTrack) {
+  calcaluateRotation(track: TrackViewTrack): TrackHeading {
 
     let heading = null;
 
@@ -209,7 +209,7 @@ export class TrackViewComponent implements OnInit {
     return heading;
   }
 
-  generateWaggonToolTip(waggon: TrackViewWaggon) {
+  generateWaggonToolTip(waggon: TrackViewWaggon): string {
 
     let toolTip = '';
     toolTip += 'Waggon-Nr.: ' + waggon.waggonNumber;
@@ -218,7 +218,7 @@ export class TrackViewComponent implements OnInit {
     return toolTip;
   }
 
-  generateTrackToolTip(track: TrackViewTrack) {
+  generateTrackToolTip(track: TrackViewTrack): string {
 
     let toolTip = '';
     toolTip += 'Gleis-Nr.: ' + track.trackNumber;
@@ -235,19 +235,17 @@ export class TrackViewComponent implements OnInit {
     return toolTip;
   }
 
-  calculateWaggonOffsetOnTrack(waggon: TrackViewWaggon) {
+  calculateWaggonOffsetOnTrack(waggon: TrackViewWaggon): number {
 
     let result = 30;
-    // console.log('calculate waggon offset for waggon ' + waggon.waggonNumber + ' on track: ' + waggon.track.trackNumber);
     const index = waggon.track.waggons.indexOf(waggon);
     for (let i = 0; i < index; i++) {
-      // console.log('regarding previous waggon: ' + waggon.track.waggons[i].waggonNumber);
       result += waggon.track.waggons[i].length + 5;
     }
     return result;
   }
 
-  getTrackHeight(track: TrackViewTrack) {
+  getTrackHeight(track: TrackViewTrack): number {
     if (track.selected) {
       // for border
       return TrackViewComponent.TRACK_HEIGHT - 2;
@@ -266,8 +264,6 @@ export class TrackViewComponent implements OnInit {
   }
 
   calculateEndPoint(track: TrackViewTrack, aScrolledLeft: number, aScrolledTop: number): Point {
-
-    // console.log('calculateEndPoint [aScrolledLeft:' + aScrolledLeft + '|aScrolledTop:' + aScrolledTop + ']');
 
     const parentRectangle: DOMRect = document.getElementById(track.generateTagId()).getBoundingClientRect();
 
@@ -321,7 +317,7 @@ export class TrackViewComponent implements OnInit {
     return Math.sqrt(Math.pow(TrackViewComponent.TRACK_HEIGHT, 2)  / 2);
   }
 
-  getEndpointHeight() {
+  getEndpointHeight(): number {
     return TrackViewComponent.ENDPOINT_DIMENSION;
   }
 
@@ -420,7 +416,7 @@ export class TrackViewComponent implements OnInit {
     droppedWaggon.track = targetWaggon.track;
   }
 
-  getWaggonColor(waggon: TrackViewWaggon) {
+  getWaggonColor(waggon: TrackViewWaggon): string {
     if (waggon.selected) {
       return 'red';
     }
@@ -445,7 +441,7 @@ export class TrackViewComponent implements OnInit {
     console.log('scrolled to [top:' + this.scrollTop + '|left:' + this.scrollLeft + ']');
   }
 
-  waggonDraggable(waggon: TrackViewWaggon) {
+  waggonDraggable(waggon: TrackViewWaggon): boolean {
     // console.log('checking waggon draggable: ' + waggon.waggonNumber);
     return (waggon.selected);
   }
