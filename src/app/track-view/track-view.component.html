@@ -20,7 +20,7 @@
          [style.width]="waggon.length+'px'"
          [style.background]="getWaggonColor(waggon)"
          title="{{generateWaggonToolTip(waggon)}}"
-         draggable="{{waggonDraggable(waggon)}}"
+         draggable="true"
          (dragover)="dragOver($event)"
          (dragstart)="dragStart($event, waggon)"
          (dragend)="dragEnd($event, waggon)"

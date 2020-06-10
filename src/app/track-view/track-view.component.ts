@@ -343,19 +343,23 @@ export class TrackViewComponent implements OnInit {
 
   dropWaggonToTrack($event: DragEvent, targetTrack: TrackViewTrack) {
 
-    if (this.blockWaggonEvent) {
-      this.blockWaggonEvent = false;
-      console.log('this.blockWaggonEvent = false;');
-      console.log('dropWaggonToTrack false --> returning');
-      return;
+    if (this.actuallyDragged.selected) {
+
+      if (this.blockWaggonEvent) {
+        this.blockWaggonEvent = false;
+        console.log('this.blockWaggonEvent = false;');
+        console.log('dropWaggonToTrack false --> returning');
+        return;
+      }
+
+      console.log('dropped waggon ' + this.actuallyDragged.waggonNumber + ' to track ' + targetTrack.trackNumber + '.');
+      const waggonSelection = this.selectedWaggons;
+
+      for (const w of this.selectedWaggons) {
+        this.moveWaggonToTrack(w, targetTrack);
+      }
     }
 
-    console.log('dropped waggon ' + this.actuallyDragged.waggonNumber + ' to track ' + targetTrack.trackNumber + '.');
-    const waggonSelection = this.selectedWaggons;
-
-    for (const w of this.selectedWaggons) {
-      this.moveWaggonToTrack(w, targetTrack);
-    }
     this.actuallyDragged = undefined;
 
     this.selectedWaggons = [];
@@ -368,15 +372,20 @@ export class TrackViewComponent implements OnInit {
      * until we know to consume the event, so dropping
      * a waggon does not also trigger dropping to track...
      */
-    this.blockWaggonEvent = true;
-    console.log('this.blockWaggonEvent = true;');
 
-    console.log('dropped waggon ' + this.actuallyDragged.waggonNumber + ' to waggon '
-      + targetWaggon.waggonNumber + ' [target track=' + targetWaggon.track.trackNumber + '].');
+    if (this.actuallyDragged.selected) {
 
-    for (const w of this.selectedWaggons) {
-      this.moveWaggonToWaggon(w, targetWaggon);
+      this.blockWaggonEvent = true;
+      console.log('this.blockWaggonEvent = true;');
+
+      console.log('dropped waggon ' + this.actuallyDragged.waggonNumber + ' to waggon '
+        + targetWaggon.waggonNumber + ' [target track=' + targetWaggon.track.trackNumber + '].');
+
+      for (const w of this.selectedWaggons) {
+        this.moveWaggonToWaggon(w, targetWaggon);
+      }
     }
+
     this.actuallyDragged = undefined;
 
     this.selectedWaggons = [];
@@ -431,8 +440,18 @@ export class TrackViewComponent implements OnInit {
     console.log('scrolled to [top:' + this.scrollTop + '|left:' + this.scrollLeft + ']');
   }
 
-  waggonDraggable(waggon: TrackViewWaggon): boolean {
-    // console.log('checking waggon draggable: ' + waggon.waggonNumber);
-    return (waggon.selected);
+  /**
+   * TODO: does not work from template...
+   *
+   * @param waggon
+   */
+  waggonDraggable(waggon: TrackViewWaggon): string {
+    /*
+    console.log('waggonDraggable? --> ' + waggon.waggonNumber);
+    if (waggon.selected) {
+      return 'true';
+    }
+    */
+    return false + '';
   }
 }
