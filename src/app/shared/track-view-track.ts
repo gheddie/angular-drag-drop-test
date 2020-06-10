@@ -1,12 +1,8 @@
 import {TrackHeading} from './track-heading.enum';
 import {TrackViewWaggon} from './track-view-waggon';
 import {Point} from './point';
-import {TrackConnectorFactory} from './track-connector-factory';
-import {Waggon} from './waggon';
 
 export class TrackViewTrack {
-
-  public static connectorFactory: TrackConnectorFactory = new TrackConnectorFactory();
 
   public x: number;
 
@@ -38,12 +34,6 @@ export class TrackViewTrack {
         waggon.track = this;
       }
     }
-  }
-
-  calculateAnchorPoint(parentTrack: TrackViewTrack, aScrolledLeft: number, aScrolledTop: number): Point {
-    const parentTrackIdentifier = parentTrack.generateTagId();
-    // console.log('calculating anchor point for parent track: ' + parentTrackIdentifier);
-    return TrackConnectorFactory.calculateAnchorPoint(parentTrack, this, aScrolledLeft, aScrolledTop);
   }
 
   generateTagId(): string {

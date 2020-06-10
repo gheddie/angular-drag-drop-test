@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {TrackViewTrack} from '../shared/track-view-track';
 import {TrackHeading} from '../shared/track-heading.enum';
 import {TrackViewWaggon} from '../shared/track-view-waggon';
-import {TrackConnectorFactory} from '../shared/track-connector-factory';
 import {Point} from '../shared/point';
 import {Waggon} from '../shared/waggon';
 import {Track} from '../shared/track';
@@ -13,6 +12,10 @@ import {Track} from '../shared/track';
   styleUrls: ['./track-view.component.css']
 })
 export class TrackViewComponent implements OnInit {
+
+  public static TRACK_HEIGHT: number = 28;
+
+  public static ENDPOINT_DIMENSION: number = 13;
 
   tracks: TrackViewTrack[] = [];
 
@@ -95,7 +98,7 @@ export class TrackViewComponent implements OnInit {
       300, t4, TrackHeading.NORTH_EAST, null);
 
     const t6 = new TrackViewTrack(null, null, 'T6',
-      400, t4, TrackHeading.EAST, waggonsT6);
+      2400, t4, TrackHeading.EAST, waggonsT6);
 
     const t7 = new TrackViewTrack(null, null, 'T7',
       500, t4, TrackHeading.WEST, waggonsT7);
@@ -164,16 +167,27 @@ export class TrackViewComponent implements OnInit {
 
   calculateTrackLeft(track: TrackViewTrack) {
     if (track.parentTrack != null) {
-      return track.calculateAnchorPoint(track.parentTrack, this.scrollLeft, this.scrollTop).x;
+      return this.calculateAnchorPoint(track.parentTrack, track, this.scrollLeft, this.scrollTop).x;
     }
     return track.x;
   }
 
   calculateTrackTop(track: TrackViewTrack) {
     if (track.parentTrack != null) {
-      return track.calculateAnchorPoint(track.parentTrack, this.scrollLeft, this.scrollTop).y;
+      return this.calculateAnchorPoint(track.parentTrack, track, this.scrollLeft, this.scrollTop).y;
     }
     return track.y;
+  }
+
+  calculateAnchorPoint(parentTrack: TrackViewTrack, childTrack: TrackViewTrack, aScrolledLeft: number, aScrolledTop: number): Point {
+
+    const parentEndPoint = this.calculateEndPoint(parentTrack, aScrolledLeft, aScrolledTop);
+    // console.log('calculating end point for parent track [' + parentTrack.trackNumber + ']: [x:' + parentEndPoint.x + '|y:' + parentEndPoint.y + ']');
+
+    const x = parentEndPoint.x;
+    const y = parentEndPoint.y;
+
+    return new Point(x, y - TrackViewComponent.TRACK_HEIGHT / 2);
   }
 
   waggonClicked(aWaggon: TrackViewWaggon) {
@@ -286,23 +300,79 @@ export class TrackViewComponent implements OnInit {
   getTrackHeight(track: TrackViewTrack) {
     if (track.selected) {
       // for border
-      return TrackConnectorFactory.TRACK_HEIGHT - 2;
+      return TrackViewComponent.TRACK_HEIGHT - 2;
     }
-    return TrackConnectorFactory.TRACK_HEIGHT;
+    return TrackViewComponent.TRACK_HEIGHT;
   }
 
   calculateTrackEndpointX(track: TrackViewTrack): number {
-    const topLeftEndpoint: Point = TrackConnectorFactory.calculateEndPoint(track, this.scrollLeft, this.scrollTop);
-    return  topLeftEndpoint.x - (TrackConnectorFactory.ENDPOINT_DIMENSION / 2);
+    const topLeftEndpoint: Point = this.calculateEndPoint(track, this.scrollLeft, this.scrollTop);
+    return  topLeftEndpoint.x - (TrackViewComponent.ENDPOINT_DIMENSION / 2);
   }
 
   calculateTrackEndpointY(track: TrackViewTrack): number {
-    const topLeftEndpoint: Point = TrackConnectorFactory.calculateEndPoint(track, this.scrollLeft, this.scrollTop);
-    return  topLeftEndpoint.y - (TrackConnectorFactory.ENDPOINT_DIMENSION / 2);
+    const topLeftEndpoint: Point = this.calculateEndPoint(track, this.scrollLeft, this.scrollTop);
+    return  topLeftEndpoint.y - (TrackViewComponent.ENDPOINT_DIMENSION / 2);
+  }
+
+  calculateEndPoint(parentTrack: TrackViewTrack, aScrolledLeft: number, aScrolledTop: number): Point {
+
+    // console.log('calculateEndPoint [aScrolledLeft:' + aScrolledLeft + '|aScrolledTop:' + aScrolledTop + ']');
+
+    const parentRectangle: DOMRect = document.getElementById(parentTrack.generateTagId()).getBoundingClientRect();
+
+    let resultX: number;
+    let resultY: number;
+
+    switch (parentTrack.heading) {
+
+      case TrackHeading.NORTH:
+        resultX = parentRectangle.right - (TrackViewComponent.TRACK_HEIGHT / 2);
+        resultY = parentRectangle.top;
+        break;
+      case TrackHeading.EAST:
+        resultX = parentRectangle.right;
+        resultY = parentRectangle.top + (TrackViewComponent.TRACK_HEIGHT / 2);
+        break;
+      case TrackHeading.SOUTH:
+        resultX = parentRectangle.right - (TrackViewComponent.TRACK_HEIGHT / 2);
+        resultY = parentRectangle.bottom;
+        break;
+      case TrackHeading.WEST:
+        resultX = parentRectangle.left;
+        resultY = parentRectangle.top + (TrackViewComponent.TRACK_HEIGHT / 2);
+        break;
+      case TrackHeading.NORTH_EAST:
+        resultX = parentRectangle.right - this.triangleCatheteLenght() / 2;
+        resultY = parentRectangle.top + this.triangleCatheteLenght() / 2;
+        break;
+      case TrackHeading.NORTH_WEST:
+        resultX = parentRectangle.left + this.triangleCatheteLenght() / 2;
+        resultY = parentRectangle.top + this.triangleCatheteLenght() / 2;
+        break;
+      case TrackHeading.SOUTH_EAST:
+        resultX = parentRectangle.right - this.triangleCatheteLenght() / 2;
+        resultY = parentRectangle.bottom - this.triangleCatheteLenght() / 2;
+        break;
+      case TrackHeading.SOUTH_WEST:
+        resultX = parentRectangle.left + this.triangleCatheteLenght() / 2;
+        resultY = parentRectangle.bottom - this.triangleCatheteLenght() / 2;
+        break;
+    }
+
+    return new Point(resultX + aScrolledLeft, resultY + aScrolledTop);
+  }
+
+  /**
+   * Die Kathete eines rechtwinkligen Dreiecks mit gleichen Katheten, wobei
+   * die Hypothenuse die Länge der Gleishöhe ist.
+   */
+  triangleCatheteLenght(): number {
+    return Math.sqrt(Math.pow(TrackViewComponent.TRACK_HEIGHT, 2)  / 2);
   }
 
   getEndpointHeight() {
-    return TrackConnectorFactory.ENDPOINT_DIMENSION;
+    return TrackViewComponent.ENDPOINT_DIMENSION;
   }
 
   keyPressed($event: KeyboardEvent) {
@@ -330,7 +400,7 @@ export class TrackViewComponent implements OnInit {
   rotateSelectedTrack() {
 
     if (this.selectedTrack != null) {
-      this.selectedTrack.heading = TrackConnectorFactory.rotateHeading(this.selectedTrack.heading);
+      this.selectedTrack.heading = this.rotateHeading(this.selectedTrack.heading);
     }
   }
 
@@ -446,5 +516,41 @@ export class TrackViewComponent implements OnInit {
     this.scrollTop = trackView.scrollTop;
     this.scrollLeft = trackView.scrollLeft;
     console.log('scrolled to [top:' + this.scrollTop + '|left:' + this.scrollLeft + ']');
+  }
+
+  waggonDraggable(waggon: TrackViewWaggon) {
+    // console.log('checking waggon draggable: ' + waggon.waggonNumber);
+    return (waggon.selected);
+  }
+
+  rotateHeading(heading: TrackHeading): TrackHeading {
+
+    switch (heading) {
+
+      case TrackHeading.NORTH:
+        return TrackHeading.NORTH_WEST;
+        break;
+      case TrackHeading.EAST:
+        return TrackHeading.NORTH_EAST;
+        break;
+      case TrackHeading.SOUTH:
+        return TrackHeading.SOUTH_EAST;
+        break;
+      case TrackHeading.WEST:
+        return TrackHeading.SOUTH_WEST;
+        break;
+      case TrackHeading.NORTH_EAST:
+        return TrackHeading.NORTH;
+        break;
+      case TrackHeading.NORTH_WEST:
+        return TrackHeading.WEST;
+        break;
+      case TrackHeading.SOUTH_EAST:
+        return TrackHeading.EAST;
+        break;
+      case TrackHeading.SOUTH_WEST:
+        return TrackHeading.SOUTH;
+        break;
+    }
   }
 }
