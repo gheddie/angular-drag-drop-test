@@ -337,16 +337,6 @@ export class TrackViewComponent implements OnInit {
     }
   }
 
-  appendTrack() {
-
-    console.log('appendTrack');
-
-    if (this.selectedTrack != null) {
-      const newTrack = new TrackViewTrack(null,  null, 'NEW_TRACK', 100, this.selectedTrack, TrackHeading.EAST, null);
-      this.tracks.push(newTrack);
-    }
-  }
-
   // --- drag + drop
 
   public dragStart(event: DragEvent, waggon: TrackViewWaggon){
