@@ -1,4 +1,4 @@
-<div class="trackview" (scroll)="scrolled($event)">
+<div class="trackview" (scroll)="trackViewScrolled($event)">
 
  <div class="tv-track-item" *ngFor="let track of tracks"
        id="{{track.generateTagId()}}"

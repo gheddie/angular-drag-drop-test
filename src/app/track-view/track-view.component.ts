@@ -78,8 +78,6 @@ export class TrackViewComponent implements OnInit {
       new TrackViewWaggon('T10_3', 25)
     ];
 
-    // ---------------------------------------------------------------------------------------------
-
     const t1 = new TrackViewTrack(400, 150, 'T1',
       350, null, TrackHeading.EAST, waggonsT1);
 
@@ -113,54 +111,9 @@ export class TrackViewComponent implements OnInit {
     const t11 = new TrackViewTrack(null, null, 'T11',
       200, t8, TrackHeading.EAST, null);
 
-    // ---------------------------------------------------------------------------------------------
-
-    /*
-    const t1 = new TrackViewTrack(100, 100, 'T1',
-      150, null, TrackHeading.EAST, waggonsT1);
-
-    const t2 = new TrackViewTrack(null, null, 'T2',
-      180, t1, TrackHeading.SOUTH_EAST, waggonsT2);
-
-    const t3 = new TrackViewTrack(null, null, 'T3',
-      580, t2, TrackHeading.EAST, waggonsT3);
-
-    const t4 = new TrackViewTrack(null, null, 'T4',
-      180, t2, TrackHeading.SOUTH_EAST, null);
-
-    const t5 = new TrackViewTrack(null, null, 'T5',
-      180, t4, TrackHeading.EAST, null);
-
-    const t6 = new TrackViewTrack(null, null, 'T6',
-      1500, t1, TrackHeading.EAST, null);
-
-    const t7 = new TrackViewTrack(null, null, 'T7',
-      180, t3, TrackHeading.NORTH_EAST, waggonsT7);
-
-    const t8 = new TrackViewTrack(null, null, 'T8',
-      180, t5, TrackHeading.NORTH_EAST, null);
-
-    const t9 = new TrackViewTrack(null, null, 'T9',
-      880, t4, TrackHeading.SOUTH_EAST, waggonsT9);
-
-    const t10 = new TrackViewTrack(null, null, 'T10',
-      3000, t9, TrackHeading.EAST, null);
-
-    const t11 = new TrackViewTrack(null, null, 'T11',
-      500, t9, TrackHeading.NORTH_WEST, null);
-      */
-
-    // ---------------------------------------------------------------------------------------------
-
     this.tracks = [
       t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11
     ];
-
-    /*
-    this.tracks = [
-      t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11
-    ];
-    */
   }
 
   calculateTrackLeft(track: TrackViewTrack) {
@@ -508,7 +461,7 @@ export class TrackViewComponent implements OnInit {
     }
   }
 
-  scrolled($event: Event) {
+  trackViewScrolled($event: Event) {
     const trackView: HTMLDivElement = (event.srcElement as HTMLDivElement);
     this.scrollTop = trackView.scrollTop;
     this.scrollLeft = trackView.scrollLeft;
