@@ -380,8 +380,10 @@ export class TrackViewComponent implements OnInit {
     for (const w of this.selectedWaggons) {
       this.moveWaggonToTrack(w, targetTrack);
     }
-
     this.actuallyDragged = undefined;
+
+    this.selectedWaggons = [];
+    this.deselectWaggons();
   }
 
   public dropWaggonToWaggon(event: DragEvent, targetWaggon: TrackViewWaggon) {
@@ -401,17 +403,8 @@ export class TrackViewComponent implements OnInit {
     }
     this.actuallyDragged = undefined;
 
-    /*
-    this.blockWaggonEvent = false;
-    console.log('this.blockWaggonEvent = false;');
-    */
-  }
-
-  getWaggonColor(waggon: TrackViewWaggon) {
-    if (waggon.selected) {
-      return 'red';
-    }
-    return 'white';
+    this.selectedWaggons = [];
+    this.deselectWaggons();
   }
 
   moveWaggonToTrack(sourceWaggon: TrackViewWaggon, targetTrack: TrackViewTrack) {
@@ -425,9 +418,6 @@ export class TrackViewComponent implements OnInit {
     }
     targetTrack.waggons.push(droppedWaggon);
     droppedWaggon.track = targetTrack;
-
-    this.selectedWaggons = [];
-    this.deselectWaggons();
   }
 
   moveWaggonToWaggon(sourceWaggon: TrackViewWaggon, targetWaggon: TrackViewWaggon) {
@@ -438,9 +428,13 @@ export class TrackViewComponent implements OnInit {
     // add waggon to target track...
     targetWaggon.track.waggons.splice((targetWaggon.track.waggons.indexOf(targetWaggon) + 1), 0, droppedWaggon);
     droppedWaggon.track = targetWaggon.track;
+  }
 
-    this.selectedWaggons = [];
-    this.deselectWaggons();
+  getWaggonColor(waggon: TrackViewWaggon) {
+    if (waggon.selected) {
+      return 'red';
+    }
+    return 'white';
   }
 
   private deselectWaggons() {
