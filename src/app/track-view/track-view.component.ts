@@ -29,7 +29,7 @@ export class TrackViewComponent implements OnInit {
 
   private blockWaggonEvent = false;
 
-  private zoomFactor: number = 1;
+  public zoomFactor: number = 1;
 
   constructor() {}
 
