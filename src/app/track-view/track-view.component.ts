@@ -118,26 +118,16 @@ export class TrackViewComponent implements OnInit {
 
   calculateTrackLeft(track: TrackViewTrack): number {
     if (track.parentTrack != null) {
-      return this.calculateAnchorPoint(track, this.scrollLeft, this.scrollTop).x;
+      return this.calculateEndPoint(track.parentTrack, this.scrollLeft, this.scrollTop).x;
     }
     return track.x;
   }
 
   calculateTrackTop(track: TrackViewTrack): number {
     if (track.parentTrack != null) {
-      return this.calculateAnchorPoint(track, this.scrollLeft, this.scrollTop).y;
+      return this.calculateEndPoint(track.parentTrack, this.scrollLeft, this.scrollTop).y - TrackViewComponent.TRACK_HEIGHT / 2;
     }
     return track.y;
-  }
-
-  calculateAnchorPoint(aTrack: TrackViewTrack, aScrolledLeft: number, aScrolledTop: number): Point {
-
-    const parentEndPoint = this.calculateEndPoint(aTrack.parentTrack, aScrolledLeft, aScrolledTop);
-
-    const x = parentEndPoint.x;
-    const y = parentEndPoint.y;
-
-    return new Point(x, y - TrackViewComponent.TRACK_HEIGHT / 2);
   }
 
   waggonClicked(aWaggon: TrackViewWaggon) {
