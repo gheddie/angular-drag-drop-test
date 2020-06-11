@@ -7,7 +7,7 @@
        [style.height]="calculateTrackHeight(track)+'px'"
        [style.width]="calculateTrackLength(track)+'px'"
        [style.border]="getTrackBorder(track)"
-       [style.transform]="'rotate('+(calcaluateRotation(track))+'deg)'"
+       [style.transform]="'rotate('+(calculateRotation(track))+'deg)'"
        title="{{generateTrackToolTip(track)}}"
        (click)="trackClicked(track)"
        (dragover)="dragOver($event)"
@@ -42,3 +42,4 @@
 <button (click)="zoomIn()">Zoom in</button>
 <button (click)="zoomOut()">Zoom out</button>
 {{zoomFactor}}
+<button (click)="resetZoom()">Reset zoom</button>

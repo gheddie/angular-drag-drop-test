@@ -19,7 +19,6 @@ export class TrackViewComponent implements OnInit {
 
   public static WAGGON_TOP = 3;
 
-
   tracks: TrackViewTrack[] = [];
 
   private selectedTrack: TrackViewTrack;
@@ -31,8 +30,6 @@ export class TrackViewComponent implements OnInit {
   private scrollLeft = 0;
 
   private scrollTop = 0;
-
-  // private blockWaggonEvent = false;
 
   public zoomFactor: number = 1;
 
@@ -141,16 +138,20 @@ export class TrackViewComponent implements OnInit {
 
     aWaggon.selected = !aWaggon.selected;
 
-    console.log('waggon clicked: ' + aWaggon.waggonNumber + ' [selected:' + aWaggon.selected + ']');
+    // console.log('waggon clicked: ' + aWaggon.waggonNumber + ' [selected:' + aWaggon.selected + ']');
+
     if (aWaggon.selected) {
       this.selectedWaggons.push(aWaggon);
     } else {
       this.selectedWaggons.splice(this.selectedWaggons.indexOf(aWaggon), 1);
     }
+
+    /*
     console.log('------------ SELECTION:');
     for (const w of this.selectedWaggons) {
       console.log(w.waggonNumber);
     }
+    */
 
     // dont let event go through to track...
     event.stopPropagation();
@@ -174,7 +175,7 @@ export class TrackViewComponent implements OnInit {
     // console.log('selected track: ' + this.selectedTrack.trackNumber);
   }
 
-  calcaluateRotation(track: TrackViewTrack): TrackHeading {
+  calculateRotation(track: TrackViewTrack): TrackHeading {
 
     let heading = null;
 
@@ -234,6 +235,12 @@ export class TrackViewComponent implements OnInit {
       toolTip += 'Root: ' + track.parentTrack.trackNumber;
       toolTip += '\n';
       toolTip += 'Ausrichtung (Root): ' + track.parentTrack.heading;
+    }
+    toolTip += '\n';
+    if (track.waggons != null) {
+      toolTip += 'Wagen: ' + track.waggons.length;
+    } else {
+      toolTip += 'Wagen: 0';
     }
     return toolTip;
   }
@@ -322,7 +329,13 @@ export class TrackViewComponent implements OnInit {
         break;
     }
 
-    return new Point(resultX + aScrolledLeft, resultY + aScrolledTop);
+    const endpoint = new Point(resultX + aScrolledLeft, resultY + aScrolledTop);
+
+    console.log(parentRectangle);
+    console.log('calculated end point [' + track.trackNumber + ', ' + track.heading + ']: [x:' + endpoint.x + '|y:' + endpoint.y + ']');
+    console.log('--------------------------');
+
+    return endpoint;
   }
 
   /**
@@ -373,15 +386,6 @@ export class TrackViewComponent implements OnInit {
 
     if (this.actuallyDragged.selected) {
 
-      /*
-      if (this.blockWaggonEvent) {
-        this.blockWaggonEvent = false;
-        console.log('this.blockWaggonEvent = false;');
-        console.log('dropWaggonToTrack false --> returning');
-        return;
-      }
-      */
-
       console.log('dropped waggon ' + this.actuallyDragged.waggonNumber + ' to track ' + targetTrack.trackNumber + '.');
       const waggonSelection = this.selectedWaggons;
 
@@ -400,16 +404,7 @@ export class TrackViewComponent implements OnInit {
 
     console.log('dropWaggonToWaggon');
 
-    /**
-     * until we know to consume the event, so dropping
-     * a waggon does not also trigger dropping to track...
-     */
-
     if (this.actuallyDragged.selected) {
-
-      // this.blockWaggonEvent = true;
-
-      console.log('this.blockWaggonEvent = true;');
 
       console.log('dropped waggon ' + this.actuallyDragged.waggonNumber + ' to waggon '
         + targetWaggon.waggonNumber + ' [target track=' + targetWaggon.track.trackNumber + '].');
@@ -516,5 +511,9 @@ export class TrackViewComponent implements OnInit {
     if (this.zoomFactor > 0.1) {
       this.zoomFactor = this.zoomFactor - 0.1;
     }
+  }
+
+  resetZoom(): void {
+    this.zoomFactor = 1.0;
   }
 }
