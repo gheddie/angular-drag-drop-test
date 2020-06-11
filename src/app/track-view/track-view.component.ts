@@ -32,7 +32,7 @@ export class TrackViewComponent implements OnInit {
 
   private scrollTop = 0;
 
-  private blockWaggonEvent = false;
+  // private blockWaggonEvent = false;
 
   public zoomFactor: number = 1;
 
@@ -137,7 +137,7 @@ export class TrackViewComponent implements OnInit {
     return track.y;
   }
 
-  waggonClicked(aWaggon: TrackViewWaggon) {
+  waggonClicked(aWaggon: TrackViewWaggon, $event: MouseEvent) {
 
     aWaggon.selected = !aWaggon.selected;
 
@@ -151,6 +151,9 @@ export class TrackViewComponent implements OnInit {
     for (const w of this.selectedWaggons) {
       console.log(w.waggonNumber);
     }
+
+    // dont let event go through to track...
+    event.stopPropagation();
   }
 
   trackClicked(track: TrackViewTrack) {
@@ -366,14 +369,18 @@ export class TrackViewComponent implements OnInit {
 
   dropWaggonToTrack($event: DragEvent, targetTrack: TrackViewTrack) {
 
+    console.log('dropWaggonToTrack');
+
     if (this.actuallyDragged.selected) {
 
+      /*
       if (this.blockWaggonEvent) {
         this.blockWaggonEvent = false;
         console.log('this.blockWaggonEvent = false;');
         console.log('dropWaggonToTrack false --> returning');
         return;
       }
+      */
 
       console.log('dropped waggon ' + this.actuallyDragged.waggonNumber + ' to track ' + targetTrack.trackNumber + '.');
       const waggonSelection = this.selectedWaggons;
@@ -391,6 +398,8 @@ export class TrackViewComponent implements OnInit {
 
   public dropWaggonToWaggon(event: DragEvent, targetWaggon: TrackViewWaggon) {
 
+    console.log('dropWaggonToWaggon');
+
     /**
      * until we know to consume the event, so dropping
      * a waggon does not also trigger dropping to track...
@@ -398,7 +407,8 @@ export class TrackViewComponent implements OnInit {
 
     if (this.actuallyDragged.selected) {
 
-      this.blockWaggonEvent = true;
+      // this.blockWaggonEvent = true;
+
       console.log('this.blockWaggonEvent = true;');
 
       console.log('dropped waggon ' + this.actuallyDragged.waggonNumber + ' to waggon '
@@ -413,6 +423,8 @@ export class TrackViewComponent implements OnInit {
 
     this.selectedWaggons = [];
     this.deselectWaggons();
+
+    event.stopPropagation();
   }
 
   moveWaggonToTrack(sourceWaggon: TrackViewWaggon, targetTrack: TrackViewTrack) {

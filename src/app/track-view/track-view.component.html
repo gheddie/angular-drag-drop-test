@@ -15,7 +15,7 @@
 
     <div class="tv-waggon-item" *ngFor="let waggon of track.waggons"
          [style.left]="calculateWaggonOffsetOnTrack(waggon)+'px'"
-         (click)="waggonClicked(waggon)"
+         (click)="waggonClicked(waggon, $event)"
          [style.top]="calculateWaggonTop(waggon)+'px'"
          [style.height]="calculateWaggonHeight(waggon)+'px'"
          [style.width]="calculateWaggonLength(waggon)+'px'"
