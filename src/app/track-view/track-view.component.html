@@ -9,6 +9,7 @@
        [style.border]="getTrackBorder(track)"
        [style.transform]="'rotate('+(calcaluateRotation(track))+'deg)'"
        title="{{generateTrackToolTip(track)}}"
+       (click)="trackClicked(track)"
        (dragover)="dragOver($event)"
        (drop)="dropWaggonToTrack($event, track)">
 

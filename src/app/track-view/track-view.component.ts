@@ -15,6 +15,11 @@ export class TrackViewComponent implements OnInit {
 
   public static ENDPOINT_DIMENSION = 13;
 
+  public static WAGGON_HEIGHT = 20;
+
+  public static WAGGON_TOP = 3;
+
+
   tracks: TrackViewTrack[] = [];
 
   private selectedTrack: TrackViewTrack;
@@ -150,7 +155,8 @@ export class TrackViewComponent implements OnInit {
 
   trackClicked(track: TrackViewTrack) {
 
-    console.log('trackClicked');
+    // console.log('track clicked: ' + track.trackNumber);
+
     if (track.selected) {
       track.selected = false;
       this.selectedTrack = null;
@@ -161,6 +167,8 @@ export class TrackViewComponent implements OnInit {
       track.selected = true;
       this.selectedTrack = track;
     }
+
+    // console.log('selected track: ' + this.selectedTrack.trackNumber);
   }
 
   calcaluateRotation(track: TrackViewTrack): TrackHeading {
@@ -234,7 +242,20 @@ export class TrackViewComponent implements OnInit {
     for (let i = 0; i < index; i++) {
       result += waggon.track.waggons[i].length * this.zoomFactor + 5 * this.zoomFactor;
     }
+
+    if (waggon.track.selected) {
+      // for border
+      return result - 1;
+    }
     return result;
+  }
+
+  calculateTrackLength(track: TrackViewTrack): number {
+    if (track.selected) {
+      // for border
+      return (track.length - 2) * this.zoomFactor;
+    }
+    return track.length * this.zoomFactor;
   }
 
   calculateTrackHeight(track: TrackViewTrack): number {
@@ -247,12 +268,12 @@ export class TrackViewComponent implements OnInit {
 
   calculateTrackEndpointX(track: TrackViewTrack): number {
     const topLeftEndpoint: Point = this.calculateEndPoint(track, this.scrollLeft, this.scrollTop);
-    return topLeftEndpoint.x - (TrackViewComponent.ENDPOINT_DIMENSION / 2);
+    return topLeftEndpoint.x - (TrackViewComponent.ENDPOINT_DIMENSION * this.zoomFactor / 2);
   }
 
   calculateTrackEndpointY(track: TrackViewTrack): number {
     const topLeftEndpoint: Point = this.calculateEndPoint(track, this.scrollLeft, this.scrollTop);
-    return topLeftEndpoint.y - (TrackViewComponent.ENDPOINT_DIMENSION / 2);
+    return topLeftEndpoint.y - (TrackViewComponent.ENDPOINT_DIMENSION * this.zoomFactor / 2);
   }
 
   calculateEndPoint(track: TrackViewTrack, aScrolledLeft: number, aScrolledTop: number): Point {
@@ -439,7 +460,7 @@ export class TrackViewComponent implements OnInit {
     const trackView: HTMLDivElement = (event.srcElement as HTMLDivElement);
     this.scrollTop = trackView.scrollTop;
     this.scrollLeft = trackView.scrollLeft;
-    console.log('scrolled to [top:' + this.scrollTop + '|left:' + this.scrollLeft + ']');
+    // console.log('scrolled to [top:' + this.scrollTop + '|left:' + this.scrollLeft + ']');
   }
 
   /**
@@ -457,20 +478,20 @@ export class TrackViewComponent implements OnInit {
     return false + '';
   }
 
-  calculateTrackLength(track: TrackViewTrack): number {
-    return track.length * this.zoomFactor;
-  }
-
   calculateWaggonLength(waggon: TrackViewWaggon): number {
     return waggon.length * this.zoomFactor;
   }
 
   calculateWaggonHeight(waggon: TrackViewWaggon): number {
-    return 20 * this.zoomFactor;
+    return TrackViewComponent.WAGGON_HEIGHT * this.zoomFactor;
   }
 
   calculateWaggonTop(waggon: TrackViewWaggon): number {
-    return 3 * this.zoomFactor;
+    if (waggon.track.selected) {
+      // for border
+      return (TrackViewComponent.WAGGON_TOP - 1) * this.zoomFactor;
+    }
+    return TrackViewComponent.WAGGON_TOP * this.zoomFactor;
   }
 
   zoomIn(): void {
