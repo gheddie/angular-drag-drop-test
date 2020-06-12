@@ -120,16 +120,21 @@ export class TrackViewComponent implements OnInit {
     ];
   }
 
+  calculateTrackStart(track: TrackViewTrack): Point {
+    const end = this.calculateEndPoint(track.parentTrack);
+    return new Point(end.x, end.y - TrackViewComponent.TRACK_HEIGHT / 2);
+  }
+
   calculateTrackStartLeft(track: TrackViewTrack): number {
     if (track.parentTrack != null) {
-      return this.calculateEndPoint(track.parentTrack).x;
+      return this.calculateTrackStart(track).x;
     }
     return track.x;
   }
 
   calculateTrackStartTop(track: TrackViewTrack): number {
     if (track.parentTrack != null) {
-      return this.calculateEndPoint(track.parentTrack).y - TrackViewComponent.TRACK_HEIGHT / 2;
+      return this.calculateTrackStart(track).y;
     }
     return track.y;
   }
