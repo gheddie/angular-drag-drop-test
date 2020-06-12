@@ -122,6 +122,11 @@ export class TrackViewComponent implements OnInit {
 
   calculateTrackStart(track: TrackViewTrack): Point {
 
+    const end = this.calculateEndPoint(track.parentTrack);
+
+    const resX = end.x;
+    const resY = end.y - TrackViewComponent.TRACK_HEIGHT / 2;
+
     switch (track.heading) {
       case TrackHeading.EAST:
         break;
@@ -141,8 +146,7 @@ export class TrackViewComponent implements OnInit {
         break;
     }
 
-    const end = this.calculateEndPoint(track.parentTrack);
-    return new Point(end.x, end.y - TrackViewComponent.TRACK_HEIGHT / 2);
+    return new Point(resX, resY);
   }
 
   calculateTrackStartLeft(track: TrackViewTrack): number {
