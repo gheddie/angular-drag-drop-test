@@ -2,8 +2,8 @@
 
  <div class="tv-track-item" *ngFor="let track of tracks"
        id="{{track.generateTagId()}}"
-       [style.left]="calculateTrackLeft(track)+'px'"
-       [style.top]="calculateTrackTop(track)+'px'"
+       [style.left]="calculateTrackStartLeft(track)+'px'"
+       [style.top]="calculateTrackStartTop(track)+'px'"
        [style.height]="calculateTrackHeight(track)+'px'"
        [style.width]="calculateTrackLength(track)+'px'"
        [style.border]="getTrackBorder(track)"

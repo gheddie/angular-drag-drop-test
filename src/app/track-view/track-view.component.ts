@@ -27,9 +27,9 @@ export class TrackViewComponent implements OnInit {
 
   public selectedWaggons: TrackViewWaggon[] = [];
 
-  private scrollLeft = 0;
+  private scrolledToLeft = 0;
 
-  private scrollTop = 0;
+  private scrolledToTop = 0;
 
   public zoomFactor: number = 1;
 
@@ -120,16 +120,16 @@ export class TrackViewComponent implements OnInit {
     ];
   }
 
-  calculateTrackLeft(track: TrackViewTrack): number {
+  calculateTrackStartLeft(track: TrackViewTrack): number {
     if (track.parentTrack != null) {
-      return this.calculateEndPoint(track.parentTrack, this.scrollLeft, this.scrollTop).x;
+      return this.calculateEndPoint(track.parentTrack).x;
     }
     return track.x;
   }
 
-  calculateTrackTop(track: TrackViewTrack): number {
+  calculateTrackStartTop(track: TrackViewTrack): number {
     if (track.parentTrack != null) {
-      return this.calculateEndPoint(track.parentTrack, this.scrollLeft, this.scrollTop).y - TrackViewComponent.TRACK_HEIGHT / 2;
+      return this.calculateEndPoint(track.parentTrack).y - TrackViewComponent.TRACK_HEIGHT / 2;
     }
     return track.y;
   }
@@ -277,16 +277,16 @@ export class TrackViewComponent implements OnInit {
   }
 
   calculateTrackEndpointX(track: TrackViewTrack): number {
-    const topLeftEndpoint: Point = this.calculateEndPoint(track, this.scrollLeft, this.scrollTop);
+    const topLeftEndpoint: Point = this.calculateEndPoint(track);
     return topLeftEndpoint.x - (TrackViewComponent.ENDPOINT_DIMENSION * this.zoomFactor / 2);
   }
 
   calculateTrackEndpointY(track: TrackViewTrack): number {
-    const topLeftEndpoint: Point = this.calculateEndPoint(track, this.scrollLeft, this.scrollTop);
+    const topLeftEndpoint: Point = this.calculateEndPoint(track);
     return topLeftEndpoint.y - (TrackViewComponent.ENDPOINT_DIMENSION * this.zoomFactor / 2);
   }
 
-  calculateEndPoint(track: TrackViewTrack, aScrolledLeft: number, aScrolledTop: number): Point {
+  calculateEndPoint(track: TrackViewTrack): Point {
 
     const parentRectangle: DOMRect = document.getElementById(track.generateTagId()).getBoundingClientRect();
 
@@ -329,7 +329,7 @@ export class TrackViewComponent implements OnInit {
         break;
     }
 
-    const endpoint = new Point(resultX + aScrolledLeft, resultY + aScrolledTop);
+    const endpoint = new Point(resultX + this.scrolledToLeft, resultY + this.scrolledToTop);
 
     console.log(parentRectangle);
     console.log('calculated end point [' + track.trackNumber + ', ' + track.heading + ']: [x:' + endpoint.x + '|y:' + endpoint.y + ']');
@@ -465,8 +465,8 @@ export class TrackViewComponent implements OnInit {
 
   trackViewScrolled($event: Event) {
     const trackView: HTMLDivElement = (event.srcElement as HTMLDivElement);
-    this.scrollTop = trackView.scrollTop;
-    this.scrollLeft = trackView.scrollLeft;
+    this.scrolledToTop = trackView.scrollTop;
+    this.scrolledToLeft = trackView.scrollLeft;
     // console.log('scrolled to [top:' + this.scrollTop + '|left:' + this.scrollLeft + ']');
   }
 
